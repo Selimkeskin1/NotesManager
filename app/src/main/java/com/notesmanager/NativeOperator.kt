@@ -1,8 +1,6 @@
 package com.notesmanager
 import android.util.Log
-import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import androidx.lifecycle.DefaultLifecycleObserver
 
 
 class NativeOperator: Operations, DefaultLifecycleObserver {

@@ -1,7 +1,7 @@
 package com.notesmanager
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.DefaultLifecycleObserver
 
 
 class VirtualOperator  :Operations, DefaultLifecycleObserver {

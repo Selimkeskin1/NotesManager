@@ -1,21 +1,17 @@
 package com.notesmanager
 
-import android.content.pm.ActivityInfo
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.notesmanager.databinding.ActivityMainBinding
 import kotlin.getValue
 import androidx.activity.ComponentActivity
-
+import com.notesmanager.ui.MainLayout
 import com.notesmanager.ui.theme.MainTheme
-import com.notesmanager.ui.*
+
 
 
 //class MainActivity : AppCompatActivity() {
