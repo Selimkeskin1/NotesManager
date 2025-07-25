@@ -14,4 +14,6 @@
     <string name="delete_tr">Sil</string>
     <string name="update_tr">Güncelle/Ekle</string>
     <string name="exit_tr">Çıkış</string>
+    <string name="next_tr">İleri</string>
+    <string name="previous_tr">Geri</string>
 </resources>

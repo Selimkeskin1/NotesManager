@@ -10,6 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import kotlin.getValue
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import com.notesmanager.ui.MainLayout
 import com.notesmanager.ui.theme.MainTheme
 
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
 //        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         lifecycle.addObserver(vop)
         viewModel.operator = vop
+
         setContent {
             MainTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {

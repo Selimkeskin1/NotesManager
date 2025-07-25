@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -21,12 +22,25 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     val volumeRange = (-60f)..0f
 
 
+
+    // NOTE !!!
     var _description by mutableStateOf("")
         private set
 
     val description: String
         get() {
             return _description
+        }
+
+
+
+    // Note ID ??
+    var _noteId by mutableIntStateOf(0)
+        private set
+
+    val noteId :  Int
+        get() {
+            return _noteId
         }
 
 
@@ -96,4 +110,15 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     fun updateOrAdd(id : Int, description : String) {
         operator?.updateOrAdd(id, description)
     }
+
+    fun next(id: Int) : String  {
+        operator?.next(id)
+        return "Next"
+    }
+
+    fun previous(id : Int): String{
+        operator?.previous(id)
+        return "previous"
+    }
+
 }

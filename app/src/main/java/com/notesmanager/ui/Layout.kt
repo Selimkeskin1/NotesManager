@@ -82,15 +82,29 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
         )
     }
 
-    // silme butonu
+// İleri butonu
     Button(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        onClick = {appViewModel.delete(10)}
+        onClick = {appViewModel.next(10) }
     )
     {
         Text(
-            text =  stringResource(R.string.delete_tr)  ,
+            text =  stringResource(R.string.next_tr)  ,
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+        )
+    }
+
+
+// Geri butonu
+    Button(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+         onClick = { appViewModel.previous(10)}
+    )
+    {
+        Text(
+            text =  stringResource(R.string.previous_tr)  ,
             style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
         )
     }
@@ -105,6 +119,19 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
     {
         Text(
             text =  stringResource(R.string.update_tr)  ,
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+        )
+    }
+
+    // silme butonu
+    Button(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        onClick = {appViewModel.delete(10)}
+    )
+    {
+        Text(
+            text =  stringResource(R.string.delete_tr)  ,
             style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
         )
     }
