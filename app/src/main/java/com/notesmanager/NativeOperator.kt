@@ -1,6 +1,7 @@
 package com.notesmanager
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
 
 class NativeOperator: Operations, DefaultLifecycleObserver {
@@ -8,6 +9,7 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
     private external fun create(): Long
     private external fun search( processHandle: Long ) : Boolean
     private external fun next( processHandle: Long ) : Boolean
+    private external fun delete( processHandle: Long )
     private var isPlaying = false
 
     private var nativeOperatorHandle: Long = 0
@@ -17,6 +19,32 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
     companion object {
         init {
             System.loadLibrary("notesmanager")
+        }
+    }
+
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        synchronized(nativeOperatorMutex) {
+            Log.d("NativeWavetableSynthesizer", "onResume() called")
+            createNativeHandleIfNotExists()
+        }
+     }
+
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+
+        synchronized(nativeOperatorMutex) {
+            Log.d("NativeWavetableSynthesizer", "onPause() called")
+
+            if (nativeOperatorMutex == 0L) {
+                Log.e("NativeWavetableSynthesizer", "Attempting to destroy a null synthesizer.")
+                return
+            }
+
+            // Destroy the synthesizer
+            delete(nativeOperatorHandle  )
+            nativeOperatorHandle = 0L
         }
     }
 

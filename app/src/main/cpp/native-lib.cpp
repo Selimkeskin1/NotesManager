@@ -37,3 +37,18 @@ Java_com_notesmanager_NativeOperator_next(JNIEnv *env, jobject thiz, jlong proce
     auto *handle = reinterpret_cast<Notes *>( process_handle );
     return true;
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_notesmanager_NativeOperator_delete(JNIEnv *env, jobject thiz, jlong process_handle) {
+    auto* handle = reinterpret_cast<Notes*>( process_handle);
+
+    if (not handle) {
+        LOGD("Attempt to destroy an unitialized synthesizer.");
+        return;
+    }
+
+    delete handle;
+
+
+}
