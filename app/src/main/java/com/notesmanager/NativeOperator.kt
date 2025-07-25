@@ -33,7 +33,7 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
 
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
-
+        Log.d("NativeWavetableSynthesizer", "onPause() called")
         synchronized(nativeOperatorMutex) {
             Log.d("NativeWavetableSynthesizer", "onPause() called")
 
@@ -46,6 +46,11 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
             delete(nativeOperatorHandle  )
             nativeOperatorHandle = 0L
         }
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        Log.d("NativeWavetableSynthesizer", "onDestroy() called")
     }
 
     override suspend fun isPlaying(): Boolean {
