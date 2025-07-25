@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 
 class ViewModel : androidx.lifecycle.ViewModel() {
 
-
     var operator: VirtualOperator? = null
 
     private val _volume = MutableLiveData(-24f)
@@ -19,8 +18,6 @@ class ViewModel : androidx.lifecycle.ViewModel() {
             return _volume
         }
     val volumeRange = (-60f)..0f
-
-
 
 
     var _description by mutableStateOf("")
@@ -45,7 +42,6 @@ class ViewModel : androidx.lifecycle.ViewModel() {
         }
     }
 
-
     fun playClicked(){
         // play() and stop() are suspended functions => we must launch a coroutine
         viewModelScope.launch {
@@ -57,7 +53,6 @@ class ViewModel : androidx.lifecycle.ViewModel() {
             updatePlayButtonLabel()
         }
     }
-
 
     private val _playButtonLabel = MutableLiveData(R.string.play)
     val playButtonLabel: LiveData<Int>
@@ -89,21 +84,15 @@ class ViewModel : androidx.lifecycle.ViewModel() {
         }
     }
 
-
     fun search(searchString : String) {
         operator?.search(searchString)
     }
-
-
 
     fun delete(id : Int) {
         operator?.delete(id)
     }
 
-
     fun updateOrAdd(id : Int, description : String) {
         operator?.updateOrAdd(id, description)
     }
-
-
 }

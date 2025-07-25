@@ -65,7 +65,7 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
             value = appViewModel.description,
             onValueChange = {appViewModel.updateDescription(it, 1) },
             label = { Text(stringResource(R.string.description)) },
-            maxLines = 2,
+            minLines = 15,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         )
 
