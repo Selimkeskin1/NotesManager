@@ -10,7 +10,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import kotlin.getValue
 import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
 import com.notesmanager.ui.MainLayout
 import com.notesmanager.ui.theme.MainTheme
 
