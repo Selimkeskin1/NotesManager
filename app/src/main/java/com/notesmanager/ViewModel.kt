@@ -100,7 +100,7 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     }
 
     fun search(searchString : String) {
-        operator?.search(searchString)
+//        operator?.search(searchString)
     }
 
     fun delete(id : Int) {

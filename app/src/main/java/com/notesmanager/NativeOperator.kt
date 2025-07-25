@@ -7,6 +7,7 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
 
     private external fun create(): Long
     private external fun search( processHandle: Long ) : Boolean
+    private external fun next( processHandle: Long ) : Boolean
     private var isPlaying = false
 
     private var nativeOperatorHandle: Long = 0
@@ -79,6 +80,12 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
     }
     override  fun next(id : Int): String {
 //        Log.d("OperationsLogging", "next() called with id: $id")
+
+        synchronized(nativeOperatorMutex) {
+            createNativeHandleIfNotExists()
+            next(nativeOperatorHandle)
+        }
+
         return "next"
     }
 

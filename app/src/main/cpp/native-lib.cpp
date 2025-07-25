@@ -31,3 +31,9 @@ Java_com_notesmanager_NativeOperator_search(JNIEnv *env, jobject thiz, jlong pro
     auto *handle = reinterpret_cast<Notes *>( process_handle );
     return true;
 }
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_notesmanager_NativeOperator_next(JNIEnv *env, jobject thiz, jlong process_handle) {
+    auto *handle = reinterpret_cast<Notes *>( process_handle );
+    return true;
+}
