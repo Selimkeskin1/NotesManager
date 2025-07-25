@@ -18,7 +18,8 @@ import com.notesmanager.ui.theme.MainTheme
 //class MainActivity : AppCompatActivity() {
 class MainActivity : ComponentActivity() {
 
-    private val vop = VirtualOperator()
+//    private val vop = VirtualOperator()
+    private val vop = NativeOperator()
     private val viewModel: ViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

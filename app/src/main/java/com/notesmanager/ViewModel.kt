@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 
 class ViewModel : androidx.lifecycle.ViewModel() {
 
-    var operator: VirtualOperator? = null
-
+//    var operator: VirtualOperator? = null
+    var operator: NativeOperator? = null
     private val _volume = MutableLiveData(-24f)
     val volume: LiveData<Float>
         get() {

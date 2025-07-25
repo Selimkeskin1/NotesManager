@@ -4,6 +4,9 @@ import androidx.lifecycle.DefaultLifecycleObserver
 
 
 class NativeOperator: Operations, DefaultLifecycleObserver {
+
+    private external fun create(): Long
+    private external fun search( processHandle: Long ) : Boolean
     private var isPlaying = false
 
     private var nativeOperatorHandle: Long = 0
@@ -50,36 +53,42 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
         if (nativeOperatorHandle != 0L) {
             return
         }
-//        synthesizerHandle = create()
-        // create the synthesizer
+        nativeOperatorHandle = create()
+        // create handle
 
     }
 
     override  fun search(searchString : String) {
-        Log.d("OperationsLogging", "search() called with searchString: $searchString")
+
+        synchronized(nativeOperatorMutex) {
+            createNativeHandleIfNotExists()
+            search(nativeOperatorHandle)
+        }
+
+//        Log.d("OperationsLogging", "search() called with searchString: $searchString")
     }
 
     override  fun delete( id : Int): Boolean {
-        Log.d("OperationsLogging", "delete() called with id: $id")
+//        Log.d("OperationsLogging", "delete() called with id: $id")
         return true
     }
 
     override fun previous(id : Int): String {
-        Log.d("OperationsLogging", "previous() called with id: $id")
+//        Log.d("OperationsLogging", "previous() called with id: $id")
         return "previous"
     }
     override  fun next(id : Int): String {
-        Log.d("OperationsLogging", "next() called with id: $id")
+//        Log.d("OperationsLogging", "next() called with id: $id")
         return "next"
     }
 
     override  fun updateOrAdd( id : Int, description : String) :Boolean {
-        Log.d("OperationsLogging", "updateOrAdd() called with id: $id, description: $description")
+//        Log.d("OperationsLogging", "updateOrAdd() called with id: $id, description: $description")
         return true
     }
 
     override fun exit() {
-        Log.d("OperationsLogging", "exit() called")
+//        Log.d("OperationsLogging", "exit() called")
     }
 
 
