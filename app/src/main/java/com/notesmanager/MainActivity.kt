@@ -1,10 +1,11 @@
 package com.notesmanager
-
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.MaterialTheme
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import kotlin.getValue
@@ -15,7 +16,7 @@ import com.notesmanager.ui.theme.MainTheme
 
 
 //class MainActivity : AppCompatActivity() {
-    class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
 
     private val vop = VirtualOperator()
     private val viewModel: ViewModel by viewModels()
@@ -43,7 +44,4 @@ import com.notesmanager.ui.theme.MainTheme
         super.onResume()
         viewModel.applyParameters()
     }
-
-
-
 }
