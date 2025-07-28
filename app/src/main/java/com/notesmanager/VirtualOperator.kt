@@ -41,11 +41,11 @@ class VirtualOperator  :Operations, DefaultLifecycleObserver {
         return true
     }
 
-    override fun previous(id : Int): String {
+    override fun previous(id : Int, searchString : String): String {
         Log.d("OperationsLogging", "previous() called with id: $id")
         return "previous"
     }
-     override  fun next(id : Int): String {
+     override  fun next(id : Int, searchString : String): String {
          Log.d("OperationsLogging", "next() called with id: $id")
          return "next"
      }
