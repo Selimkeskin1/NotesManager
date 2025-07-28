@@ -9,9 +9,9 @@ interface Operations {
 
     fun search(searchString : String)
     fun delete( id : Int) : Boolean
-    fun next(id : Int): String
-    fun previous(id : Int) : String
-    fun updateOrAdd( id : Int, description : String) :Boolean
+    fun next(id : Int, searchString : String): String
+    fun previous(id : Int, searchString : String) : String
+    fun updateOrAdd( id : Int, description : String, isNew : Boolean) :Boolean
 
     fun exit()
 

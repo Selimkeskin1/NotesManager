@@ -34,6 +34,16 @@ class ViewModel : androidx.lifecycle.ViewModel() {
 
 
 
+    var _newNote by mutableStateOf(true)
+    private set
+
+    val newNote: Boolean
+        get() {
+            return _newNote
+        }
+
+
+
     // Note ID ??
     var _noteId by mutableIntStateOf(0)
         private set
@@ -42,6 +52,16 @@ class ViewModel : androidx.lifecycle.ViewModel() {
         get() {
             return _noteId
         }
+
+
+
+    var _searchString by mutableStateOf("")
+        private set
+     val searchString: String
+        get() {
+            return _searchString
+        }
+
 
 
     private val _frequency = MutableLiveData(300f)
@@ -96,11 +116,16 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     fun updateDescription(description: String, type: Int) {
         if ( type == 1 ) {
             this._description = description
+            if ( ( description == "")  && (! _newNote)  ) {
+                _newNote = true
+            }
         }
     }
 
     fun search(searchString : String) {
-//        operator?.search(searchString)
+
+        _searchString = searchString
+        operator?.search(searchString)
     }
 
     fun delete(id : Int) {
@@ -108,17 +133,20 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     }
 
     fun updateOrAdd(id : Int, description : String) {
-        operator?.updateOrAdd(id, description)
+        operator?.updateOrAdd(id, description, _newNote)
     }
 
-    fun next(id: Int) : String  {
-        operator?.next(id)
-        return "Next"
+    fun next(id: Int)  {
+        if (operator?.next(id , searchString) != "No record found") {
+          _newNote = false
+        }
+
     }
 
-    fun previous(id : Int): String{
-        operator?.previous(id)
-        return "previous"
+    fun previous(id : Int){
+        if (operator?.previous(id, searchString) != "No record found") {
+            _newNote = false
+        }
     }
 
 }

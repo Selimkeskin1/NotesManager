@@ -25,24 +25,75 @@ Java_com_notesmanager_NativeOperator_create(JNIEnv *env, jobject thiz) {
 }
 
 extern "C"
-JNIEXPORT jboolean JNICALL
-Java_com_notesmanager_NativeOperator_search(JNIEnv *env, jobject thiz, jlong process_handle) {
+JNIEXPORT jstring JNICALL
+Java_com_notesmanager_NativeOperator_search(JNIEnv *env, jobject thiz, jlong process_handle,
+                                            jstring search_string) {
     auto *handle = reinterpret_cast<Notes *>( process_handle );
-    return true;
+
+    std::string no_record = "No record found";
+    std::string search = env->GetStringUTFChars(search_string, nullptr);
+    auto nextRecord = handle->next( search );
+    if ( nextRecord  == std::nullopt ) return env->NewStringUTF( no_record.c_str() ) ;
+    env->NewStringUTF( nextRecord->c_str() );
+
 }
 extern "C"
-JNIEXPORT jboolean JNICALL
-Java_com_notesmanager_NativeOperator_next(JNIEnv *env, jobject thiz, jlong process_handle) {
+JNIEXPORT jstring JNICALL
+Java_com_notesmanager_NativeOperator_next(JNIEnv *env, jobject thiz, jlong process_handle, jstring search_string) {
     auto *handle = reinterpret_cast<Notes *>( process_handle );
-    return true;
+    std::string no_record = "No record found";
+    std::string search = env->GetStringUTFChars(search_string, nullptr);
+     auto nextRecord = handle->next( search );
+    if ( nextRecord  == std::nullopt ) return env->NewStringUTF( no_record.c_str() ) ;
+    env->NewStringUTF( nextRecord->c_str() );
 }
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_notesmanager_NativeOperator_delete(JNIEnv *env, jobject thiz, jlong process_handle) {
+Java_com_notesmanager_NativeOperator_deleteObject(JNIEnv *env, jobject thiz, jlong process_handle) {
     auto* handle = reinterpret_cast<Notes*>( process_handle);
     if (not handle) {
         return;
     }
     delete handle;
+}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_notesmanager_NativeOperator_test(JNIEnv *env, jobject thiz, jlong process_handle) {
+    // TODO: implement test()
+    auto *handle = reinterpret_cast<Notes *>( process_handle );
+}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_notesmanager_NativeOperator_previous(JNIEnv *env, jobject thiz, jlong process_handle, jstring search_string) {
+    // TODO: implement previous()
+    auto *handle = reinterpret_cast<Notes *>( process_handle );
+    std::string no_record = "No record found";
+    std::string search = env->GetStringUTFChars(search_string, nullptr);
+    auto nextRecord = handle->previous( search  );
+    if ( nextRecord  == std::nullopt ) return env->NewStringUTF( no_record.c_str() ) ;
+    env->NewStringUTF( nextRecord->c_str() );
+}
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_notesmanager_NativeOperator_deleteNote(JNIEnv *env, jobject thiz, jlong process_handle,
+                                                jint id) {
+    auto *handle = reinterpret_cast<Notes *>( process_handle );
+    std::string search =  "";
+    return  handle->deleteNote( search  );
+}
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_notesmanager_NativeOperator_updateOrAdd(JNIEnv *env, jobject thiz, jlong process_handle,
+                                                 jint id, jstring description, jboolean is_new) {
+    auto *handle = reinterpret_cast<Notes *>( process_handle );
+    if (not handle) {
+        if (is_new) {
+            std::string new_note = env->GetStringUTFChars(description, nullptr);
+            return handle->newNote(new_note);
+        } else {
+            std::string update_note = env->GetStringUTFChars(description, nullptr);
+            return handle->updateNote(update_note);
+        }
+    }
 }

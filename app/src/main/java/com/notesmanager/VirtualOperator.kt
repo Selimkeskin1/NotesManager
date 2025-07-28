@@ -50,7 +50,7 @@ class VirtualOperator  :Operations, DefaultLifecycleObserver {
          return "next"
      }
 
-    override  fun updateOrAdd( id : Int, description : String) :Boolean {
+    override  fun updateOrAdd( id : Int, description : String, isNew : Boolean) :Boolean {
         Log.d("OperationsLogging", "updateOrAdd() called with id: $id, description: $description")
         return true
     }

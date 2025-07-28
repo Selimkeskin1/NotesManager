@@ -6,7 +6,6 @@
 Notes::Notes()
 {
     LOGD("Notes Constructor called");
-    std::cout << "Constructor called" << std::endl;
     notestream = new std::fstream("notes.txt", std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 }
 
@@ -19,7 +18,6 @@ Notes::~Notes()
         delete notestream;
     }
 
-    std::cout << "Deconstructor called" << std::endl;
 }
 
 std::string Notes::getNext()

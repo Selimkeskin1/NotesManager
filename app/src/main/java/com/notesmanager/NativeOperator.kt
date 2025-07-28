@@ -6,9 +6,17 @@ import androidx.lifecycle.LifecycleOwner
 
 class NativeOperator: Operations, DefaultLifecycleObserver {
     private external fun create(): Long
-    private external fun search( processHandle: Long ) : Boolean
-    private external fun next( processHandle: Long ) : Boolean
-    private external fun delete( processHandle: Long )
+    private external fun search( processHandle: Long , searchString: String) : String
+    private external fun next( processHandle: Long, searchString: String) : String
+    private external fun deleteObject( processHandle: Long )
+    private external fun  previous( processHandle: Long , searchString: String ) : String
+
+    private external  fun deleteNote( processHandle: Long, id : Int) : Boolean
+
+    private external fun updateOrAdd( processHandle: Long, id : Int, description : String, isNew : Boolean) : Boolean
+
+
+    private external fun test( processHandle: Long ): String
     private var isPlaying = false
     private var nativeOperatorHandle: Long = 0
     private val nativeOperatorMutex = Object()
@@ -32,7 +40,7 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
                 return
             }
             // Destroy the synthesizer
-            delete(nativeOperatorHandle  )
+            deleteObject(nativeOperatorHandle  )
             nativeOperatorHandle = 0L
         }
     }
@@ -81,10 +89,9 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
     }
 
     override  fun search(searchString : String) {
-
         synchronized(nativeOperatorMutex) {
             createNativeHandleIfNotExists()
-            search(nativeOperatorHandle)
+            search(nativeOperatorHandle, searchString)
         }
 
 //        Log.d("OperationsLogging", "search() called with searchString: $searchString")
@@ -92,33 +99,40 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
 
     override  fun delete( id : Int): Boolean {
 //        Log.d("OperationsLogging", "delete() called with id: $id")
-        return true
+        synchronized(nativeOperatorMutex) {
+            createNativeHandleIfNotExists()
+            return deleteNote(nativeOperatorHandle, id)
+        }
+
     }
 
-    override fun previous(id : Int): String {
-//        Log.d("OperationsLogging", "previous() called with id: $id")
-        return "previous"
+    override fun previous(id : Int, searchString : String): String {
+        synchronized(nativeOperatorMutex) {
+            createNativeHandleIfNotExists()
+            return previous(nativeOperatorHandle, searchString)
+        }
     }
-    override  fun next(id : Int): String {
+
+    override  fun next(id : Int, searchString : String): String {
 //        Log.d("OperationsLogging", "next() called with id: $id")
 
         synchronized(nativeOperatorMutex) {
             createNativeHandleIfNotExists()
-            next(nativeOperatorHandle)
+            return next(nativeOperatorHandle, searchString)
         }
-
-        return "next"
     }
 
-    override  fun updateOrAdd( id : Int, description : String) :Boolean {
+    override  fun updateOrAdd( id : Int, description : String , isNew : Boolean) :Boolean {
 //        Log.d("OperationsLogging", "updateOrAdd() called with id: $id, description: $description")
+        synchronized(nativeOperatorMutex) {
+            createNativeHandleIfNotExists()
+            return updateOrAdd(nativeOperatorHandle, id, description, isNew)
+        }
         return true
     }
 
     override fun exit() {
 //        Log.d("OperationsLogging", "exit() called")
     }
-
-
 
 }
