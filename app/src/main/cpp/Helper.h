@@ -7,6 +7,7 @@
 #include <iostream>
 #include "UnitOfMeasure.h"
 #include "Log.h"
+#include "Constants.h"
 
 class Helper
 {

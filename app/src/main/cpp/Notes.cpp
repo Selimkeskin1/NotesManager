@@ -5,8 +5,21 @@
 
 Notes::Notes()
 {
+    std::string file_path = {};
+    file_path.append(ROOT_PATH);
+    file_path.append("notes.txt");
+
+
     LOGD("Notes Constructor called");
-    notestream = new std::fstream("notes.txt", std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+
+
+    if (!(std::filesystem::exists(file_path))){
+        notestream = new std::fstream(file_path, std::ios_base::out |  std::ios_base::app);
+        notestream->close();
+    }
+
+    notestream = new std::fstream(file_path, std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+
 }
 
 Notes::~Notes()
@@ -229,7 +242,7 @@ bool Notes::search(std::string &search)
 
 std::optional<std::string> Notes::next(std::string &search)
 {
-    while (notestream->eof() == false)
+    while (!notestream->eof())
     {
         try
         {

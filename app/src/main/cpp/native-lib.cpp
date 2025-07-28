@@ -87,13 +87,13 @@ JNIEXPORT jboolean JNICALL
 Java_com_notesmanager_NativeOperator_updateOrAdd(JNIEnv *env, jobject thiz, jlong process_handle,
                                                  jint id, jstring description, jboolean is_new) {
     auto *handle = reinterpret_cast<Notes *>( process_handle );
-    if (not handle) {
+
         if (is_new) {
             std::string new_note = env->GetStringUTFChars(description, nullptr);
-            return handle->newNote(new_note);
+            return handle->newNote( new_note  );
         } else {
             std::string update_note = env->GetStringUTFChars(description, nullptr);
             return handle->updateNote(update_note);
         }
-    }
+
 }
