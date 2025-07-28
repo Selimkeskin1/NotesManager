@@ -19,7 +19,6 @@ JNIEXPORT jlong JNICALL
 Java_com_notesmanager_NativeOperator_create(JNIEnv *env, jobject thiz) {
     auto notes = std::make_unique<Notes>();
     if (not notes) {
-        LOGD("Failed to create notes");
         notes.reset();
     }
     return reinterpret_cast<jlong>(notes.release());
@@ -42,13 +41,8 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_notesmanager_NativeOperator_delete(JNIEnv *env, jobject thiz, jlong process_handle) {
     auto* handle = reinterpret_cast<Notes*>( process_handle);
-
     if (not handle) {
-        LOGD("Attempt to destroy an unitialized synthesizer.");
         return;
     }
-
     delete handle;
-
-
 }
