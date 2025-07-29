@@ -137,15 +137,21 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     }
 
     fun next(id: Int)  {
-        if (operator?.next(id , searchString) != "No record found") {
+
+        val retunValue = operator?.next(id , searchString) ?: ""
+        if ( retunValue!= "No record found") {
           _newNote = false
+            this._description = retunValue
         }
 
     }
 
     fun previous(id : Int){
-        if (operator?.previous(id, searchString) != "No record found") {
+        val retunValue = operator?.previous(id , searchString) ?: ""
+
+        if ( retunValue != "No record found") {
             _newNote = false
+            this._description = retunValue
         }
     }
 

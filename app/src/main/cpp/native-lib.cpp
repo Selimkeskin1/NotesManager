@@ -34,7 +34,7 @@ Java_com_notesmanager_NativeOperator_search(JNIEnv *env, jobject thiz, jlong pro
     std::string search = env->GetStringUTFChars(search_string, nullptr);
     auto nextRecord = handle->next( search );
     if ( nextRecord  == std::nullopt ) return env->NewStringUTF( no_record.c_str() ) ;
-    env->NewStringUTF( nextRecord->c_str() );
+    return env->NewStringUTF( nextRecord->c_str() );
 
 }
 extern "C"
@@ -45,7 +45,7 @@ Java_com_notesmanager_NativeOperator_next(JNIEnv *env, jobject thiz, jlong proce
     std::string search = env->GetStringUTFChars(search_string, nullptr);
      auto nextRecord = handle->next( search );
     if ( nextRecord  == std::nullopt ) return env->NewStringUTF( no_record.c_str() ) ;
-    env->NewStringUTF( nextRecord->c_str() );
+    return env->NewStringUTF( nextRecord->c_str() );
 }
 
 extern "C"
@@ -72,7 +72,7 @@ Java_com_notesmanager_NativeOperator_previous(JNIEnv *env, jobject thiz, jlong p
     std::string search = env->GetStringUTFChars(search_string, nullptr);
     auto nextRecord = handle->previous( search  );
     if ( nextRecord  == std::nullopt ) return env->NewStringUTF( no_record.c_str() ) ;
-    env->NewStringUTF( nextRecord->c_str() );
+    return env->NewStringUTF( nextRecord->c_str() );
 }
 extern "C"
 JNIEXPORT jboolean JNICALL
@@ -87,9 +87,10 @@ JNIEXPORT jboolean JNICALL
 Java_com_notesmanager_NativeOperator_updateOrAdd(JNIEnv *env, jobject thiz, jlong process_handle,
                                                  jint id, jstring description, jboolean is_new) {
     auto *handle = reinterpret_cast<Notes *>( process_handle );
-
         if (is_new) {
             std::string new_note = env->GetStringUTFChars(description, nullptr);
+            new_note.insert(0, " ");
+            new_note.insert(new_note.begin()+1, '\t');
             return handle->newNote( new_note  );
         } else {
             std::string update_note = env->GetStringUTFChars(description, nullptr);
