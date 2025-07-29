@@ -62,6 +62,22 @@ class ViewModel : androidx.lifecycle.ViewModel() {
             return _searchString
         }
 
+// işelm sonucunu kullanıcıya göster
+    var _alertMessage by mutableStateOf("")
+        private set
+    val alertMessage: String
+        get() {
+            return _alertMessage
+        }
+
+// onaydan sonra işlemi yürüt
+    var _userCommand by mutableStateOf("")
+        private set
+    val userCommand: String
+        get() {
+            return _userCommand
+        }
+
 
 
     private val _frequency = MutableLiveData(300f)
@@ -153,6 +169,18 @@ class ViewModel : androidx.lifecycle.ViewModel() {
             _newNote = false
             this._description = retunValue
         }
+    }
+
+
+    fun setUserCommand( user_comm : String ){
+        this._userCommand = user_comm
+    }
+
+    fun refreshMessageAndUserCommand(){
+
+        this._userCommand = ""
+        this._alertMessage = ""
+
     }
 
 }

@@ -10,12 +10,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeMute
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -110,7 +112,8 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
     Button(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        onClick = {appViewModel.updateOrAdd(0, appViewModel.description)}
+//        onClick = {appViewModel.updateOrAdd(0, appViewModel.description)}
+        onClick = {appViewModel.setUserCommand("UPDATE")}
     )
     {
         Text(
@@ -123,7 +126,8 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
     Button(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        onClick = {appViewModel.delete(10)}
+//        onClick = {appViewModel.delete(10)}
+        onClick = {appViewModel.setUserCommand("DELETE")}
     )
     {
         Text(
@@ -144,6 +148,31 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
             style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
         )
     }
+
+    if (!(appViewModel.userCommand.isEmpty())){
+        when (appViewModel.userCommand) {
+            "DELETE" -> {
+                popUpToContinue(
+                    onConfirm = { appViewModel.delete(10)   },
+                    onDismiss = { appViewModel.refreshMessageAndUserCommand() }
+                )
+            }
+            "UPDATE" ->{
+                popUpToContinue(onConfirm = { appViewModel.updateOrAdd(10, appViewModel.description) },
+                                onDismiss = { appViewModel.refreshMessageAndUserCommand() }
+                )
+
+            }
+
+
+
+
+        }
+    }
+
+
+
+
 
 
 }
@@ -292,6 +321,25 @@ private fun WavetableSelectionPanel(
 
         }
     }
+}
+
+@Composable
+fun popUpToContinue(onConfirm: () -> Unit, onDismiss: () -> Unit): Unit {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel_tr)) }
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirm()
+                onDismiss()
+            }
+
+            ) { Text(stringResource(R.string.continue_tr)) }
+        },
+        text = { Text(stringResource(R.string.question_continue_tr)) },
+    )
 }
 
 

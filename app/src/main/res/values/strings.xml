@@ -16,4 +16,7 @@
     <string name="exit_tr">Çıkış</string>
     <string name="next_tr">İleri</string>
     <string name="previous_tr">Geri</string>
+    <string name="cancel_tr">İptal</string>
+    <string name="continue_tr">Devam Et</string>
+    <string name="question_continue_tr">Devam etmek istiyor musunuz?</string>
 </resources>
