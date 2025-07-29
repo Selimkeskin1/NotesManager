@@ -113,7 +113,7 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
 //        onClick = {appViewModel.updateOrAdd(0, appViewModel.description)}
-        onClick = {appViewModel.setUserCommand("UPDATE")}
+        onClick = {appViewModel.setUserCommand("UPDATE", appViewModel.description)}
     )
     {
         Text(
@@ -127,7 +127,7 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
 //        onClick = {appViewModel.delete(10)}
-        onClick = {appViewModel.setUserCommand("DELETE")}
+        onClick = {appViewModel.setUserCommand("DELETE", appViewModel.description)}
     )
     {
         Text(
@@ -149,6 +149,10 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
         )
     }
 
+
+
+
+
     if (!(appViewModel.userCommand.isEmpty())){
         when (appViewModel.userCommand) {
             "DELETE" -> {
@@ -161,13 +165,18 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
                 popUpToContinue(onConfirm = { appViewModel.updateOrAdd(10, appViewModel.description) },
                                 onDismiss = { appViewModel.refreshMessageAndUserCommand() }
                 )
-
             }
-
-
-
-
         }
+    }
+
+
+    if (appViewModel.alertMessage.isNotEmpty()){
+        AlertDialog(
+            onDismissRequest = {appViewModel.refreshMessageAndUserCommand()},
+            confirmButton = { TextButton(onClick =  {appViewModel.refreshMessageAndUserCommand()} )
+               { Text(text =  stringResource(R.string.continue_tr)  )  } },
+            text = { Text(appViewModel.alertMessage) },
+        )
     }
 
 
