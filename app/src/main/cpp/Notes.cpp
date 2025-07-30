@@ -117,6 +117,7 @@ std::string Notes::getCurrent()
 
 bool Notes::newNote(std::string &newnote)
 {
+
     notestream->clear();
     if (notestream->is_open())
     {

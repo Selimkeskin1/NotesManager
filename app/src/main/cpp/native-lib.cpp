@@ -88,10 +88,17 @@ Java_com_notesmanager_NativeOperator_updateOrAdd(JNIEnv *env, jobject thiz, jlon
                                                  jint id, jstring description, jboolean is_new) {
     auto *handle = reinterpret_cast<Notes *>( process_handle );
         if (is_new) {
-            std::string new_note = env->GetStringUTFChars(description, nullptr);
-            new_note.insert(0, " ");
-            new_note.insert(new_note.begin()+1, '\t');
-            return handle->newNote( new_note  );
+
+            std::string line = {};
+            auto line_id = handle->getId();
+            line.append(std::to_string(  line_id ) );
+            line.append(1,'\t');
+            line.append(" ");
+            line.append(1,'\t');
+            line.append(  env->GetStringUTFChars(description, nullptr) );
+
+
+            return handle->newNote( line  );
         } else {
             std::string update_note = env->GetStringUTFChars(description, nullptr);
             return handle->updateNote(update_note);
