@@ -128,7 +128,7 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
             createNativeHandleIfNotExists()
             return updateOrAdd(nativeOperatorHandle, id, description, isNew)
         }
-        return true
+
     }
 
     override fun exit() {

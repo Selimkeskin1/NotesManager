@@ -169,8 +169,7 @@ fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
         }
     }
 
-
-    if (appViewModel.alertMessage.isNotEmpty()){
+    if (!(appViewModel.alertMessage.isEmpty())){
         AlertDialog(
             onDismissRequest = {appViewModel.refreshMessageAndUserCommand()},
             confirmButton = { TextButton(onClick =  {appViewModel.refreshMessageAndUserCommand()} )
@@ -341,8 +340,9 @@ fun popUpToContinue(onConfirm: () -> Unit, onDismiss: () -> Unit): Unit {
         },
         confirmButton = {
             TextButton(onClick = {
-                onConfirm()
                 onDismiss()
+                onConfirm()
+
             }
 
             ) { Text(stringResource(R.string.continue_tr)) }

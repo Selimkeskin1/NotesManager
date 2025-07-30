@@ -147,11 +147,22 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     }
 
     fun delete(id : Int) {
-        operator?.delete(id)
+        if (operator?.delete(id) == true ){
+           this._alertMessage = "İşlem başarılı\nKayıt silindi"
+        }else{
+            this._alertMessage = "Tekrar deneyin\nİşlem başarısız"
+        }
     }
 
     fun updateOrAdd(id : Int, description : String) {
-        operator?.updateOrAdd(id, description, _newNote)
+      if ( operator?.updateOrAdd(id, description, _newNote) == true ){
+          this._alertMessage = "İşlem başarılı\nKayıt güncellendi"
+      }else{
+          this._alertMessage = "Tekrar deneyin\nİşlem başarısız"
+      }
+
+
+
     }
 
     fun next(id: Int)  {
@@ -160,6 +171,8 @@ class ViewModel : androidx.lifecycle.ViewModel() {
         if ( retunValue!= "No record found") {
           _newNote = false
             this._description = retunValue
+        }else{
+            this._alertMessage = "Son kayıttasınız!"
         }
 
     }
@@ -170,6 +183,9 @@ class ViewModel : androidx.lifecycle.ViewModel() {
         if ( retunValue != "No record found") {
             _newNote = false
             this._description = retunValue
+        }else {
+            this._alertMessage = "İlk kayıttasınız!"
+
         }
     }
 
