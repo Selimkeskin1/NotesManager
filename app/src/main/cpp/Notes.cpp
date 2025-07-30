@@ -175,7 +175,7 @@ std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize)
 
 //    char buffer[bufferSize + 1] = {};
     char buffer[bufferSize + 1];
-    for( auto  c: buffer)  c = '\0';
+    for( auto & c: buffer)  c = '\0';
 
     notestream->clear();
 
@@ -282,4 +282,28 @@ std::optional<std::string> Notes::previous(std::string &search)
 std::optional<std::string> Notes::current(std::string &search)
 {
     return getCurrent();
+}
+
+int Notes::getId()
+{
+    std::string line = {};
+    notestream->clear();
+    auto currentPos = notestream->tellg();
+    notestream->seekg(0, notestream->end);
+    auto read_pos = getBeginOfLinePosition(2, 5);
+    notestream->seekg(std::get<0>(read_pos));
+    std::getline(*notestream, line);
+
+    if (!(line.empty())){
+        notestream->seekp(currentPos);
+        std::stringstream ss(line);
+        std::string row = {};
+        int index = 0;
+        while (std::getline(ss, row, '\t')){
+            if (index == 0){
+                return (std::stoi(row) + 1);
+            }
+        }
+    }
+    return 0;
 }
