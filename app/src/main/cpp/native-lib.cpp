@@ -96,8 +96,6 @@ Java_com_notesmanager_NativeOperator_updateOrAdd(JNIEnv *env, jobject thiz, jlon
             line.append(" ");
             line.append(1,'\t');
             line.append(  env->GetStringUTFChars(description, nullptr) );
-
-
             return handle->newNote( line  );
         } else {
             std::string update_note = env->GetStringUTFChars(description, nullptr);

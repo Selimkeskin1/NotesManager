@@ -45,14 +45,15 @@ std::string Notes::getNext()
             std::string row = {};
             std::stringstream ss(line);
             int index = 0;
+
             while (std::getline(ss, row, '\t'))
             {
-                if (index == 1)
-                {
-                    if ((row != "X"))
-                    {
-                        return line;
-                    }
+                if (index == 1){
+                    if ((row == "X"))
+                        break;
+
+                }else if (index == 2){
+                   return row;
                 }
                 index++;
             }
@@ -92,8 +93,11 @@ std::string Notes::getPrevious()
             std::string row = {};
             while (std::getline(ss, row, '\t'))
             {
-                if ((index == 1) && (row != "X")) //  not deleted!
-                    return prevLine;
+                if ((index == 1) && (row == "X")) //  not deleted!
+                    break;
+                else if (index == 2)
+                    return row;
+
                 index++;
             }
         }
