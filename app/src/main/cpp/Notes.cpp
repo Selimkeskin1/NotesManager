@@ -164,7 +164,7 @@ bool Notes::deleteNote(std::string &del)
     std::cout << std::get<0>(pos) << std::endl;
     notestream->clear();
     auto writepos = std::get<0>(pos) > 0 ? std::get<0>(pos) + 2 : 0;
-    notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos) + 1 : 1, std::ios_base::beg);
+    notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos)  : 0, std::ios_base::beg);
     (*notestream) << "X";
     notestream->flush();
     return true;
@@ -311,9 +311,10 @@ int Notes::getId()
         std::string row = {};
         int index = 0;
         while (std::getline(ss, row, '\t')){
-            if (index == 0){
+            if (index == 1){
                 return (std::stoi(row) + 1);
             }
+            ++index;
         }
     }
     return 0;
