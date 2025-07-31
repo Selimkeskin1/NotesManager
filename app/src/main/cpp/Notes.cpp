@@ -115,7 +115,7 @@ std::string Notes::getCurrent()
     auto pos = getBeginOfLinePosition(2, 5);
     notestream->seekg(std::get<0>(pos));
     std::getline(*notestream, currentLine);
-    notestream->seekp(currentPos);
+    notestream->seekg(currentPos);
     return currentLine;
 }
 
@@ -164,6 +164,7 @@ bool Notes::deleteNote(std::string &del)
     std::cout << std::get<0>(pos) << std::endl;
     notestream->clear();
     auto writepos = std::get<0>(pos) > 0 ? std::get<0>(pos) + 2 : 0;
+    //Changing the current write position.
     notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos)  : 0, std::ios_base::beg);
     (*notestream) << "X";
     notestream->flush();
@@ -306,7 +307,7 @@ int Notes::getId()
     std::getline(*notestream, line);
 
     if (!(line.empty())){
-        notestream->seekp(currentPos);
+        notestream->seekg(currentPos);
         std::stringstream ss(line);
         std::string row = {};
         int index = 0;
