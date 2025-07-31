@@ -32,7 +32,7 @@ Java_com_notesmanager_NativeOperator_search(JNIEnv *env, jobject thiz, jlong pro
 
     std::string no_record = "No record found";
     std::string search = env->GetStringUTFChars(search_string, nullptr);
-    auto nextRecord = handle->next(search);
+    auto nextRecord = handle->search(search);
     if (nextRecord == std::nullopt) return env->NewStringUTF(no_record.c_str());
     return env->NewStringUTF(nextRecord->c_str());
 

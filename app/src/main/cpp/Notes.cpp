@@ -237,12 +237,18 @@ std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize)
     //    return findpos;
 }
 
-bool Notes::search(std::string &search)
+std::optional<std::string> Notes::search(std::string &search)
 {
     notestream->clear();
-    auto currentPos = notestream->tellg();
-
-    return true;
+    auto lastPos = notestream->tellg();
+    notestream->seekg( 0,notestream->beg);
+    auto nextRecord = next(search);
+    if(nextRecord == std::nullopt) {
+        notestream->clear();
+        notestream->seekg( lastPos);
+        return std::nullopt;
+    }
+    else return nextRecord;
 }
 
 std::optional<std::string> Notes::next(std::string &search)

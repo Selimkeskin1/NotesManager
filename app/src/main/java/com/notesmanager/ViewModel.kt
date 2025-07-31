@@ -137,6 +137,10 @@ class ViewModel : androidx.lifecycle.ViewModel() {
             if ( ( description == "")  && (! _newNote)  ) {
                 _newNote = true
             }
+
+            if (this._description.isEmpty()){
+                _searchString = ""
+            }
         }
     }
 

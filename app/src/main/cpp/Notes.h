@@ -38,6 +38,6 @@ public:
     bool deleteNote( std::string & );
     bool updateNote(std::string &);
     std::tuple<int, int> getBeginOfLinePosition(int,int);
-    bool search( std::string & );
+    std::optional<std::string> search( std::string & );
     int getId();
 };
