@@ -88,10 +88,10 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
 
     }
 
-    override  fun search(searchString : String) {
+    override  fun search(searchString : String) : String {
         synchronized(nativeOperatorMutex) {
             createNativeHandleIfNotExists()
-            search(nativeOperatorHandle, searchString)
+            return search(nativeOperatorHandle, searchString)
         }
 
 //        Log.d("OperationsLogging", "search() called with searchString: $searchString")

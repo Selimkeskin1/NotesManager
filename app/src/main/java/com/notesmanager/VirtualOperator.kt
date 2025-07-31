@@ -32,7 +32,9 @@ class VirtualOperator  :Operations, DefaultLifecycleObserver {
         Log.d("OperationsLogging", "setVolume() called with volume: $volumeInDb")
     }
 
-    override  fun search(searchString : String) {
+    override  fun search(searchString : String) : String {
+
+        return searchString
         Log.d("OperationsLogging", "search() called with searchString: $searchString")
     }
 

@@ -7,7 +7,7 @@ interface Operations {
     suspend fun setFrequency(frequencyInHz: Float)
     suspend fun setVolume(volumeInDb: Float)
 
-    fun search(searchString : String)
+    fun search(searchString : String):String
     fun delete( id : Int) : Boolean
     fun next(id : Int, searchString : String): String
     fun previous(id : Int, searchString : String) : String

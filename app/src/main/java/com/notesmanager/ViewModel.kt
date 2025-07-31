@@ -143,7 +143,16 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     fun search(searchString : String) {
 
         _searchString = searchString
-        operator?.search(searchString)
+
+        val retunValue = operator?.search(searchString) ?: ""
+
+        if ( retunValue!= "No record found") {
+            this._description = retunValue
+            _newNote = false
+        }else{
+            this._alertMessage = "Kayıt Bulunamadı!"
+        }
+
     }
 
     fun delete(id : Int) {
