@@ -48,7 +48,7 @@ std::string Notes::getNext()
 
             while (std::getline(ss, row, '\t'))
             {
-                if (index == 1){
+                if (index == 0){
                     if ((row == "X"))
                         break;
 
@@ -93,7 +93,7 @@ std::string Notes::getPrevious()
             std::string row = {};
             while (std::getline(ss, row, '\t'))
             {
-                if ((index == 1) && (row == "X")) //  not deleted!
+                if ((index == 0) && (row == "X")) //  not deleted!
                     break;
                 else if (index == 2)
                     return row;
@@ -164,7 +164,7 @@ bool Notes::deleteNote(std::string &del)
     std::cout << std::get<0>(pos) << std::endl;
     notestream->clear();
     auto writepos = std::get<0>(pos) > 0 ? std::get<0>(pos) + 2 : 0;
-    notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos) + 2 : 0, std::ios_base::beg);
+    notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos) + 1 : 1, std::ios_base::beg);
     (*notestream) << "X";
     notestream->flush();
     return true;
@@ -284,10 +284,10 @@ std::optional<std::string> Notes::previous(std::string &search)
         }
         catch (const std::exception &exc)
         {
-            return exc.what();
+            return std::nullopt;
         }
     }
-    return   std::nullopt;
+    return  std::nullopt;
 }
 
 std::optional<std::string> Notes::current(std::string &search)
