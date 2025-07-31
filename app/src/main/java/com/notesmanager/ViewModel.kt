@@ -162,6 +162,20 @@ class ViewModel : androidx.lifecycle.ViewModel() {
     fun delete(id : Int) {
         if (operator?.delete(id) == true ){
            this._alertMessage = "İşlem başarılı\nKayıt silindi"
+
+            val retunValue = operator?.previous(id , searchString) ?: ""
+            if ( retunValue!= "No record found") {
+               this._description = retunValue
+                this._newNote = false
+            }else{
+                val retunValue = operator?.next(id , searchString) ?: ""
+                if ( retunValue!= "No record found") {
+                    this._description = retunValue
+                    this._newNote = false
+                }else{
+                    this._description = ""
+                }
+            }
         }else{
             this._alertMessage = "Tekrar deneyin\nİşlem başarısız"
         }
@@ -173,9 +187,6 @@ class ViewModel : androidx.lifecycle.ViewModel() {
       }else{
           this._alertMessage = "Tekrar deneyin\nİşlem başarısız"
       }
-
-
-
     }
 
     fun next(id: Int)  {

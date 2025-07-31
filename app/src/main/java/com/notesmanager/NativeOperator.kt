@@ -102,6 +102,8 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
         synchronized(nativeOperatorMutex) {
             createNativeHandleIfNotExists()
             return deleteNote(nativeOperatorHandle, id)
+
+
         }
 
     }

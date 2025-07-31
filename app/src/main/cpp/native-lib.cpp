@@ -83,6 +83,10 @@ Java_com_notesmanager_NativeOperator_deleteNote(JNIEnv *env, jobject thiz, jlong
     auto *handle = reinterpret_cast<Notes *>( process_handle );
     std::string search = "";
     return handle->deleteNote(search);
+
+
+
+
 }
 extern "C"
 JNIEXPORT jboolean JNICALL
