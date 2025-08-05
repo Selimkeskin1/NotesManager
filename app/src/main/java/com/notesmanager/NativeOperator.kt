@@ -36,7 +36,7 @@ class NativeOperator: Operations, DefaultLifecycleObserver {
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
         synchronized(nativeOperatorMutex) {
-            if (nativeOperatorMutex == 0L) {
+            if (nativeOperatorHandle == 0L) {
                 return
             }
             // Destroy the synthesizer
