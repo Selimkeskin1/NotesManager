@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextDirection
 @Composable
 fun MainLayout(
     modifier: Modifier,
-    viewModel: ViewModel = viewModel()
+    viewModel: ViewModel
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -48,17 +48,16 @@ fun MainLayout(
             verticalArrangement = Arrangement.Top,
         ) {
 
-//            WavetableSelectionPanel(modifier, viewModel)
-//           ControlsPanel(modifier, viewModel)
-            MainScreen(modifier, viewModel)
+//             WavetableSelectionPanel(modifier, viewModel)
+//            ControlsPanel(modifier, viewModel)
+             MainScreen(modifier, viewModel)
 
         }
     }
 }
 
 @Composable
-fun MainScreen(modifier: Modifier,
-               appViewModel: ViewModel
+fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
 ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -71,7 +70,7 @@ fun MainScreen(modifier: Modifier,
 
 // arama butonu
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         onClick = {appViewModel.search(appViewModel.description)  }
     )
@@ -84,7 +83,7 @@ fun MainScreen(modifier: Modifier,
 
 // İleri butonu
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         onClick = {appViewModel.next(10) }
     )
@@ -98,7 +97,7 @@ fun MainScreen(modifier: Modifier,
 
 // Geri butonu
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
          onClick = { appViewModel.previous(10)}
     )
@@ -112,7 +111,7 @@ fun MainScreen(modifier: Modifier,
 
     // güncelleme ekleme butonu
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
 //        onClick = {appViewModel.updateOrAdd(0, appViewModel.description)}
         onClick = {appViewModel.setUserCommand("UPDATE", appViewModel.description)}
@@ -126,7 +125,7 @@ fun MainScreen(modifier: Modifier,
 
     // silme butonu
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
 //        onClick = {appViewModel.delete(10)}
         onClick = {appViewModel.setUserCommand("DELETE", appViewModel.description)}
@@ -140,7 +139,7 @@ fun MainScreen(modifier: Modifier,
 
     // çıkış butonu
     Button(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         onClick = {}
     )

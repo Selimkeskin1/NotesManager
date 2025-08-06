@@ -46,9 +46,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-
-
     }
 
     override fun onDestroy() {

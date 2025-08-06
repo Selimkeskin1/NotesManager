@@ -12,7 +12,9 @@ import com.notesmanager.R
 import com.notesmanager.ViewModel
 
 @Composable
-fun DashboardScreen(   vm: ViewModel    ) {
+fun DashboardScreen(    vm: ViewModel    ) {
+
+    /*
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -23,7 +25,9 @@ fun DashboardScreen(   vm: ViewModel    ) {
     }
 
 
-    MainScreen(modifier = Modifier , appViewModel = vm, )
+*/
+
+     MainLayout( modifier = Modifier, viewModel  = vm, )
 
 
 }
