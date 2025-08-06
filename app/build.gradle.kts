@@ -27,6 +27,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
@@ -35,18 +36,27 @@ android {
 
     externalNativeBuild {
         cmake {
+
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
+
+
+
         }
     }
     buildFeatures {
         viewBinding = true
         compose = true
     }
+
+    ndkVersion =  "29.0.13846066"
+
 }
 
 dependencies {
 
+    implementation(libs.androidx.navigation.common.ktx)
+    implementation(libs.androidx.navigation.runtime.ktx)
     val lifecycle_version = "2.9.2"
     val arch_version = "2.2.0"
 
@@ -71,5 +81,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.8.3")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation("androidx.compose.material:material:1.8.3")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("androidx.navigation:navigation-compose:2.9.3")
     implementation(libs.androidx.core.ktx)
 }
