@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 class ViewModel : androidx.lifecycle.ViewModel() {
 
 //    var operator: VirtualOperator? = null
+
     var operator: NativeOperator? = null
+
     private val _volume = MutableLiveData(-24f)
     val volume: LiveData<Float>
         get() {
@@ -88,6 +90,16 @@ class ViewModel : androidx.lifecycle.ViewModel() {
             return _frequency
         }
     private val frequencyRange = 40f..3000f
+
+
+    /*
+
+    init {
+        operator = NativeOperator()
+    }
+
+     */
+
     fun setVolume(volumeInDb: Float) {
         _volume.value = volumeInDb
         viewModelScope.launch {

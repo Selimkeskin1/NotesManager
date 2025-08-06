@@ -57,7 +57,9 @@ fun MainLayout(
 }
 
 @Composable
-fun MainScreen(modifier: Modifier, appViewModel: ViewModel) {
+fun MainScreen(modifier: Modifier,
+               appViewModel: ViewModel
+) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = appViewModel.description,

@@ -10,10 +10,19 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import kotlin.getValue
 import androidx.activity.ComponentActivity
-import com.notesmanager.ui.MainLayout
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.notesmanager.ui.NavigationRoutes
 import com.notesmanager.ui.theme.MainTheme
+import com.notesmanager.ui.unauthenticatedGraph
 
-
+import com.notesmanager.ui.MainLayout
+import com.notesmanager.ui.authenticatedGraph
 
 //class MainActivity : AppCompatActivity() {
 class MainActivity : ComponentActivity() {
@@ -31,11 +40,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    // pass the ViewModel down the composables' hierarchy
-                    MainLayout(Modifier, viewModel)
+                    // pass the ViewModel down the composable' hierarchy
+//                    MainLayout(Modifier, viewModel)
+                    MainApp(viewModel)
                 }
             }
         }
+
+
+
     }
 
     override fun onDestroy() {
@@ -46,4 +59,35 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         viewModel.applyParameters()
     }
+}
+
+
+@Composable
+fun MainApp(  vm : ViewModel ) {
+    androidx.compose.material3.Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
+    ) {
+        MainAppNavHost(vm = vm )
+    }
+
+}
+
+@Composable
+fun MainAppNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    vm : ViewModel
+
+) {
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = NavigationRoutes.Unauthenticated.NavigationRoute.route
+    ) {
+        // Unauthenticated user flow screens
+        unauthenticatedGraph(navController = navController)
+        authenticatedGraph(navController = navController , vm  = vm  )
+    }
+
 }

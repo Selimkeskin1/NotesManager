@@ -1,9 +1,14 @@
 package com.notesmanager.ui
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.compose.composable
+import com.notesmanager.NativeOperator
+import com.notesmanager.ViewModel
 
 fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
@@ -30,6 +35,8 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
         // Registration
         composable(route = NavigationRoutes.Unauthenticated.Registration.route) {
+
+            /*
             RegistrationScreen(
                 onNavigateBack = {
                     navController.navigateUp()
@@ -42,6 +49,7 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
                     }
                 }
             )
+             */
         }
     }
 }
@@ -49,14 +57,17 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 /**
  * Authenticated screens nav graph builder
  */
-fun NavGraphBuilder.authenticatedGraph(navController: NavController) {
+
+
+fun NavGraphBuilder.authenticatedGraph(navController: NavController ,
+                                       vm : ViewModel) {
     navigation(
         route = NavigationRoutes.Authenticated.NavigationRoute.route,
         startDestination = NavigationRoutes.Authenticated.Dashboard.route
     ) {
         // Dashboard
         composable(route = NavigationRoutes.Authenticated.Dashboard.route) {
-            DashboardScreen()
+            DashboardScreen(  vm = vm )
         }
     }
 }
