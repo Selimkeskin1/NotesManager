@@ -74,6 +74,7 @@ fun LoginScreen(
                         .padding(bottom = normalDimensions.paddingExtraLarge)
                 ) {
 
+                    /*
                     // Heading Jetpack Compose
                     MediumTitleText(
                         modifier = Modifier
@@ -82,7 +83,9 @@ fun LoginScreen(
                         text = stringResource(id = com.notesmanager.R.string.jetpack_compose),
                         textAlign = TextAlign.Center
                     )
+                    */
 
+                    /*
                     // Login Logo
                     AsyncImage(
                         modifier = Modifier
@@ -96,6 +99,8 @@ fun LoginScreen(
                             .build(),
                         contentDescription = stringResource(id = com.notesmanager.R.string.login_heading_text)
                     )
+
+                    */
 
                     // Heading Login
                     TitleText(
@@ -129,6 +134,7 @@ fun LoginScreen(
                 }
             }
 
+            /*
             Row(
                 modifier = Modifier.padding(normalDimensions.paddingNormal),
                 horizontalArrangement = Arrangement.Center,
@@ -148,6 +154,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
+            */
         }
     }
 }

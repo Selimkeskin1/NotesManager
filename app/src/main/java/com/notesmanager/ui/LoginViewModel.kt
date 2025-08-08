@@ -10,7 +10,6 @@ class LoginViewModel : ViewModel() {
 
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
-
             // Email/Mobile changed
             is LoginUiEvent.EmailOrMobileChanged -> {
                 loginState.value = loginState.value.copy(
