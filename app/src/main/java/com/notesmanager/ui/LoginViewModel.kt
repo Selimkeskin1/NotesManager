@@ -50,18 +50,12 @@ class LoginViewModel : ViewModel() {
                     if(loginState.value.emailOrMobile != "selimkeskin1@gmail.com"){
                         loginState.value = loginState.value.copy(
                             errorState =  loginState.value.errorState.copy( wrongCridentials) )
-
-
                     }else{
-
-
                         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
                         val hour = now.hour.toString().padStart(2,'0')
                         val minute = now.minute.toString().padStart(2,'0')
                         val day =  now.day.toString().padStart(2,'0')
-
                          val pwd = hour + minute  + day
-
                         if ( loginState.value.password == ( pwd  ) ){
                              loginState.value = loginState.value.copy(isLoginSuccessful = true)
                          }else{
@@ -69,8 +63,6 @@ class LoginViewModel : ViewModel() {
                                  errorState =  loginState.value.errorState.copy( wrongCridentials) )
                          }
                     }
-
-
                 }
             }
         }
