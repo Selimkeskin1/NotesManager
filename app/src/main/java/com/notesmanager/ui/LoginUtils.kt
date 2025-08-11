@@ -10,3 +10,8 @@ val passwordEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.login_error_msg_empty_password
 )
+
+val wrongCridentials  = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.wrong_cridentials
+)

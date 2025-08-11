@@ -2,12 +2,17 @@ package com.notesmanager.ui
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class LoginViewModel : ViewModel() {
     var loginState = mutableStateOf(LoginState())
         private set
 
 
+    @OptIn(ExperimentalTime::class)
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
             // Email/Mobile changed
@@ -41,7 +46,31 @@ class LoginViewModel : ViewModel() {
                 val inputsValidated = validateInputs()
                 if (inputsValidated) {
                     // TODO Trigger login in authentication flow
-                    loginState.value = loginState.value.copy(isLoginSuccessful = true)
+
+                    if(loginState.value.emailOrMobile != "selimkeskin1@gmail.com"){
+                        loginState.value = loginState.value.copy(
+                            errorState =  loginState.value.errorState.copy( wrongCridentials) )
+
+
+                    }else{
+
+
+                        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                        val hour = now.hour.toString().padStart(2,'0')
+                        val minute = now.minute.toString().padStart(2,'0')
+                        val day =  now.day.toString().padStart(2,'0')
+
+                         val pwd = hour + minute  + day
+
+                        if ( loginState.value.password == ( pwd  ) ){
+                             loginState.value = loginState.value.copy(isLoginSuccessful = true)
+                         }else{
+                             loginState.value = loginState.value.copy(
+                                 errorState =  loginState.value.errorState.copy( wrongCridentials) )
+                         }
+                    }
+
+
                 }
             }
         }
