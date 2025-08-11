@@ -85,4 +85,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.9.3")
     implementation(libs.androidx.core.ktx)
     implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 }
