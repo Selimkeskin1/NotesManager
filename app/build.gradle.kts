@@ -67,13 +67,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.kotlinx.coroutines.android )
+    implementation(libs.kotlinx.datetime.jvm)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.compose.material3:material3:1.3.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2")
     implementation("androidx.compose.material3:material3-window-size-class:1.3.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.2")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation ("androidx.compose.runtime:runtime-livedata:1.8.3")
     implementation ("com.google.oboe:oboe:1.9.3")
     implementation ("androidx.compose.ui:ui:1.8.3")
@@ -83,7 +85,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.8.3")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("androidx.navigation:navigation-compose:2.9.3")
-    implementation(libs.androidx.core.ktx)
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.7.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+
+
+
 }

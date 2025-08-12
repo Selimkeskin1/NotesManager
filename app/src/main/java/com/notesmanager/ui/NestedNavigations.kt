@@ -59,15 +59,17 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
  */
 
 
-fun NavGraphBuilder.authenticatedGraph(navController: NavController ,
-                                       vm : ViewModel) {
+fun NavGraphBuilder.authenticatedGraph(
+    navController: NavController,
+    vm: ViewModel
+) {
     navigation(
         route = NavigationRoutes.Authenticated.NavigationRoute.route,
         startDestination = NavigationRoutes.Authenticated.Dashboard.route
     ) {
         // Dashboard
         composable(route = NavigationRoutes.Authenticated.Dashboard.route) {
-            DashboardScreen(  vm = vm )
+            DashboardScreen(vm = vm)
         }
     }
 }

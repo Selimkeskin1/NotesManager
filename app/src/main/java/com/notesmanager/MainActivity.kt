@@ -1,4 +1,5 @@
 package com.notesmanager
+
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -22,14 +23,13 @@ import com.notesmanager.ui.theme.MainTheme
 import com.notesmanager.ui.unauthenticatedGraph
 
 
-
 import com.notesmanager.ui.MainLayout
 import com.notesmanager.ui.authenticatedGraph
 
 //class MainActivity : AppCompatActivity() {
 class MainActivity : ComponentActivity() {
 
-//    private val vop = VirtualOperator()
+    //    private val vop = VirtualOperator()
     private val vop = NativeOperator()
     private val viewModel: ViewModel by viewModels()
 
@@ -41,7 +41,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MainTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
                     // pass the ViewModel down the composable' hierarchy
 //                    MainLayout(Modifier, viewModel)
                     MainApp(viewModel)
@@ -54,6 +57,7 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         lifecycle.removeObserver(vop)
     }
+
     override fun onResume() {
         super.onResume()
         viewModel.applyParameters()
@@ -62,12 +66,12 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun MainApp(  vm : ViewModel ) {
+fun MainApp(vm: ViewModel) {
     androidx.compose.material3.Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
-        MainAppNavHost(vm = vm )
+        MainAppNavHost(vm = vm)
     }
 
 }
@@ -76,7 +80,7 @@ fun MainApp(  vm : ViewModel ) {
 fun MainAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    vm : ViewModel
+    vm: ViewModel
 
 ) {
     NavHost(
@@ -86,7 +90,7 @@ fun MainAppNavHost(
     ) {
         // Unauthenticated user flow screens
         unauthenticatedGraph(navController = navController)
-        authenticatedGraph(navController = navController , vm  = vm  )
+        authenticatedGraph(navController = navController, vm = vm)
     }
 
 }

@@ -76,8 +76,7 @@ fun PasswordTextField(
         singleLine = true,
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = imeAction
+            keyboardType = KeyboardType.Password, imeAction = imeAction
         ),
         keyboardActions = KeyboardActions(onDone = {
             keyboardController?.hide()
@@ -87,8 +86,7 @@ fun PasswordTextField(
             if (isError) {
                 ErrorTextInputField(text = errorText)
             }
-        }
-    )
+        })
 }
 
 /**
@@ -107,24 +105,15 @@ fun EmailTextField(
 ) {
 
     OutlinedTextField(
-        modifier = modifier,
-        value = value,
-        onValueChange = onValueChange,
-        label = {
+        modifier = modifier, value = value, onValueChange = onValueChange, label = {
             Text(text = label)
-        },
-        maxLines = 1,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = imeAction
-        ),
-        isError = isError,
-        supportingText = {
+        }, maxLines = 1, keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email, imeAction = imeAction
+        ), isError = isError, supportingText = {
             if (isError) {
                 ErrorTextInputField(text = errorText)
             }
-        }
-    )
+        })
 
 }
 
@@ -144,23 +133,14 @@ fun MobileNumberTextField(
 ) {
 
     OutlinedTextField(
-        modifier = modifier,
-        value = value,
-        onValueChange = onValueChange,
-        label = {
+        modifier = modifier, value = value, onValueChange = onValueChange, label = {
             Text(text = label)
-        },
-        maxLines = 1,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Phone,
-            imeAction = imeAction
-        ),
-        isError = isError,
-        supportingText = {
+        }, maxLines = 1, keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Phone, imeAction = imeAction
+        ), isError = isError, supportingText = {
             if (isError) {
                 ErrorTextInputField(text = errorText)
             }
-        }
-    )
+        })
 
 }

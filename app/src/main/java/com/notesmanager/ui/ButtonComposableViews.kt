@@ -20,15 +20,12 @@ import com.notesmanager.ui.theme.normalDimensions
 
 @Composable
 fun NormalButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier, text: String, onClick: () -> Unit
 ) {
     Button(
         modifier = modifier
             .height(normalDimensions.normalButtonHeight)
-            .requiredWidth(normalDimensions.minButtonWidth),
-        onClick = onClick
+            .requiredWidth(normalDimensions.minButtonWidth), onClick = onClick
     ) {
         Text(text = text, style = MaterialTheme.typography.titleMedium)
     }
@@ -45,8 +42,7 @@ fun SmallClickableWithIconAndText(
     Row(
         modifier = modifier.clickable {
             onClick.invoke()
-        },
-        verticalAlignment = Alignment.CenterVertically
+        }, verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = iconVector,

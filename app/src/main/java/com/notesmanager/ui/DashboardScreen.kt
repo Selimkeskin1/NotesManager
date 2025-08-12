@@ -12,7 +12,7 @@ import com.notesmanager.R
 import com.notesmanager.ViewModel
 
 @Composable
-fun DashboardScreen(    vm: ViewModel    ) {
+fun DashboardScreen(vm: ViewModel) {
 
     /*
 
@@ -27,7 +27,7 @@ fun DashboardScreen(    vm: ViewModel    ) {
 
 */
 
-     MainLayout( modifier = Modifier, viewModel  = vm, )
+    MainLayout(modifier = Modifier, viewModel = vm)
 
 
 }

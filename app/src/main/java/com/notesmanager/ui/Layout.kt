@@ -50,34 +50,35 @@ fun MainLayout(
 
 //             WavetableSelectionPanel(modifier, viewModel)
 //            ControlsPanel(modifier, viewModel)
-             MainScreen(modifier, viewModel)
+            MainScreen(modifier, viewModel)
 
         }
     }
 }
 
 @Composable
-fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
+fun MainScreen(
+    modifier: Modifier, appViewModel: ViewModel
 ) {
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = appViewModel.description,
-            onValueChange = {appViewModel.updateDescription(it, 1) },
-            label = { Text(stringResource(R.string.description)) },
-            minLines = 15,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        )
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = appViewModel.description,
+        onValueChange = { appViewModel.updateDescription(it, 1) },
+        label = { Text(stringResource(R.string.description)) },
+        minLines = 15,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+    )
 
 // arama butonu
     Button(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        onClick = {appViewModel.search(appViewModel.description)  }
+        onClick = { appViewModel.search(appViewModel.description) }
     )
     {
         Text(
-            text =  stringResource(R.string.search_tr)  ,
-            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+            text = stringResource(R.string.search_tr),
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
 
@@ -85,12 +86,12 @@ fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
     Button(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        onClick = {appViewModel.next(10) }
+        onClick = { appViewModel.next(10) }
     )
     {
         Text(
-            text =  stringResource(R.string.next_tr)  ,
-            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+            text = stringResource(R.string.next_tr),
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
 
@@ -99,12 +100,12 @@ fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
     Button(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-         onClick = { appViewModel.previous(10)}
+        onClick = { appViewModel.previous(10) }
     )
     {
         Text(
-            text =  stringResource(R.string.previous_tr)  ,
-            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+            text = stringResource(R.string.previous_tr),
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
 
@@ -114,12 +115,12 @@ fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
 //        onClick = {appViewModel.updateOrAdd(0, appViewModel.description)}
-        onClick = {appViewModel.setUserCommand("UPDATE", appViewModel.description)}
+        onClick = { appViewModel.setUserCommand("UPDATE", appViewModel.description) }
     )
     {
         Text(
-            text =  stringResource(R.string.update_tr)  ,
-            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+            text = stringResource(R.string.update_tr),
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
 
@@ -128,12 +129,12 @@ fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
 //        onClick = {appViewModel.delete(10)}
-        onClick = {appViewModel.setUserCommand("DELETE", appViewModel.description)}
+        onClick = { appViewModel.setUserCommand("DELETE", appViewModel.description) }
     )
     {
         Text(
-            text =  stringResource(R.string.delete_tr)  ,
-            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+            text = stringResource(R.string.delete_tr),
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
 
@@ -145,8 +146,8 @@ fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
     )
     {
         Text(
-            text =  stringResource(R.string.exit_tr)  ,
-            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content )
+            text = stringResource(R.string.exit_tr),
+            style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
 
@@ -154,34 +155,34 @@ fun MainScreen( modifier: Modifier,  appViewModel: ViewModel
 
 
 
-    if (!(appViewModel.userCommand.isEmpty())){
+    if (!(appViewModel.userCommand.isEmpty())) {
         when (appViewModel.userCommand) {
             "DELETE" -> {
                 popUpToContinue(
-                    onConfirm = { appViewModel.delete(10)   },
+                    onConfirm = { appViewModel.delete(10) },
                     onDismiss = { appViewModel.refreshMessageAndUserCommand() }
                 )
             }
-            "UPDATE" ->{
-                popUpToContinue(onConfirm = { appViewModel.updateOrAdd(10, appViewModel.description) },
-                                onDismiss = { appViewModel.refreshMessageAndUserCommand() }
+
+            "UPDATE" -> {
+                popUpToContinue(
+                    onConfirm = { appViewModel.updateOrAdd(10, appViewModel.description) },
+                    onDismiss = { appViewModel.refreshMessageAndUserCommand() }
                 )
             }
         }
     }
 
-    if (!(appViewModel.alertMessage.isEmpty())){
+    if (!(appViewModel.alertMessage.isEmpty())) {
         AlertDialog(
-            onDismissRequest = {appViewModel.refreshMessageAndUserCommand()},
-            confirmButton = { TextButton(onClick =  {appViewModel.refreshMessageAndUserCommand()} )
-               { Text(text =  stringResource(R.string.continue_tr)  )  } },
+            onDismissRequest = { appViewModel.refreshMessageAndUserCommand() },
+            confirmButton = {
+                TextButton(onClick = { appViewModel.refreshMessageAndUserCommand() })
+                { Text(text = stringResource(R.string.continue_tr)) }
+            },
             text = { Text(appViewModel.alertMessage) },
         )
     }
-
-
-
-
 
 
 }
@@ -225,19 +226,23 @@ private fun PlayControl(modifier: Modifier, appViewModel: ViewModel) {
     // the composable will be recomposed (redrawn) when the observed state changes.
     val playButtonLabel = appViewModel.playButtonLabel.observeAsState()
 
-    PlayControlContent(modifier = modifier,
+    PlayControlContent(
+        modifier = modifier,
         // onClick handler now simply notifies the ViewModel that it has been clicked
         onClick = {
             appViewModel.playClicked()
         },
         // playButtonLabel will never be null; if it is, then we have a serious implementation issue
-        buttonLabel = stringResource(playButtonLabel.value!!))
+        buttonLabel = stringResource(playButtonLabel.value!!)
+    )
 }
 
 @Composable
 private fun PlayControlContent(modifier: Modifier, onClick: () -> Unit, buttonLabel: String) {
-    Button(modifier = modifier,
-        onClick = onClick) {
+    Button(
+        modifier = modifier,
+        onClick = onClick
+    ) {
         Text(buttonLabel)
     }
 }
@@ -253,7 +258,6 @@ private fun PitchControl(
     // the ViewModel, which ideally, shouldn't be aware of the UI.
     // When the slider position changes, this composable will be recomposed as we explained in
     // the UI tutorial.
-
 
 
 }

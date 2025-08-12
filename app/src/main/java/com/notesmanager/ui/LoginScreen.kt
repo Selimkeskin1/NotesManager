@@ -33,7 +33,6 @@ import  com.notesmanager.ui.theme.*
 import com.notesmanager.ui.*
 
 
-
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = viewModel(),
@@ -110,25 +109,21 @@ fun LoginScreen(
 
                     // Login Inputs Composable
                     LoginInputs(
-                        loginState = loginState,
-                        onEmailOrMobileChange = { inputString ->
-                            loginViewModel.onUiEvent(
-                                loginUiEvent = LoginUiEvent.EmailOrMobileChanged(
-                                    inputString
-                                )
+                        loginState = loginState, onEmailOrMobileChange = { inputString ->
+                        loginViewModel.onUiEvent(
+                            loginUiEvent = LoginUiEvent.EmailOrMobileChanged(
+                                inputString
                             )
-                        },
-                        onPasswordChange = { inputString ->
-                            loginViewModel.onUiEvent(
-                                loginUiEvent = LoginUiEvent.PasswordChanged(
-                                    inputString
-                                )
+                        )
+                    }, onPasswordChange = { inputString ->
+                        loginViewModel.onUiEvent(
+                            loginUiEvent = LoginUiEvent.PasswordChanged(
+                                inputString
                             )
-                        },
-                        onSubmit = {
-                            loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.Submit)
-                        },
-                        onForgotPasswordClick = onNavigateToForgotPassword
+                        )
+                    }, onSubmit = {
+                        loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.Submit)
+                    }, onForgotPasswordClick = onNavigateToForgotPassword
                     )
 
                 }

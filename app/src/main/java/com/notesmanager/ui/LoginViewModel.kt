@@ -20,10 +20,10 @@ class LoginViewModel : ViewModel() {
                 loginState.value = loginState.value.copy(
                     emailOrMobile = loginUiEvent.inputValue,
                     errorState = loginState.value.errorState.copy(
-                        emailOrMobileErrorState = if (loginUiEvent.inputValue.trim().isNotEmpty())
-                            ErrorState()
-                        else
-                            emailOrMobileEmptyErrorState
+                        emailOrMobileErrorState = if (loginUiEvent.inputValue.trim()
+                                .isNotEmpty()
+                        ) ErrorState()
+                        else emailOrMobileEmptyErrorState
                     )
                 )
             }
@@ -33,10 +33,10 @@ class LoginViewModel : ViewModel() {
                 loginState.value = loginState.value.copy(
                     password = loginUiEvent.inputValue,
                     errorState = loginState.value.errorState.copy(
-                        passwordErrorState = if (loginUiEvent.inputValue.trim().isNotEmpty())
-                            ErrorState()
-                        else
-                            passwordEmptyErrorState
+                        passwordErrorState = if (loginUiEvent.inputValue.trim()
+                                .isNotEmpty()
+                        ) ErrorState()
+                        else passwordEmptyErrorState
                     )
                 )
             }
@@ -47,21 +47,24 @@ class LoginViewModel : ViewModel() {
                 if (inputsValidated) {
                     // TODO Trigger login in authentication flow
 
-                    if(loginState.value.emailOrMobile != "selimkeskin1@gmail.com"){
+                    if (loginState.value.emailOrMobile != "selimkeskin1@gmail.com") {
                         loginState.value = loginState.value.copy(
-                            errorState =  loginState.value.errorState.copy( wrongCridentials) )
-                    }else{
-                        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-                        val hour = now.hour.toString().padStart(2,'0')
-                        val minute = now.minute.toString().padStart(2,'0')
-                        val day =  now.day.toString().padStart(2,'0')
-                         val pwd = hour + minute  + day
-                        if ( loginState.value.password == ( pwd  ) ){
-                             loginState.value = loginState.value.copy(isLoginSuccessful = true)
-                         }else{
-                             loginState.value = loginState.value.copy(
-                                 errorState =  loginState.value.errorState.copy( wrongCridentials) )
-                         }
+                            errorState = loginState.value.errorState.copy(wrongCridentials)
+                        )
+                    } else {
+                        val now =
+                            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                        val hour = now.hour.toString().padStart(2, '0')
+                        val minute = now.minute.toString().padStart(2, '0')
+                        val day = now.day.toString().padStart(2, '0')
+                        val pwd = hour + minute + day
+                        if (loginState.value.password == (pwd)) {
+                            loginState.value = loginState.value.copy(isLoginSuccessful = true)
+                        } else {
+                            loginState.value = loginState.value.copy(
+                                errorState = loginState.value.errorState.copy(wrongCridentials)
+                            )
+                        }
                     }
                 }
             }
