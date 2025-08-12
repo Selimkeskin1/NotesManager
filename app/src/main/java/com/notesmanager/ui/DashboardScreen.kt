@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.notesmanager.NativeOperator
 import com.notesmanager.R
-import com.notesmanager.ViewModel
+import com.notesmanager.MainScreenViewModel
 
 @Composable
-fun DashboardScreen(vm: ViewModel) {
+fun DashboardScreen(vm: MainScreenViewModel) {
 
     /*
 

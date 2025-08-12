@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.notesmanager.R
-import com.notesmanager.ViewModel
+import com.notesmanager.MainScreenViewModel
 import  androidx.compose.ui.text.*
 import  androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.style.TextDirection
@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextDirection
 @Composable
 fun MainLayout(
     modifier: Modifier,
-    viewModel: ViewModel
+    viewModel: MainScreenViewModel
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -58,7 +58,7 @@ fun MainLayout(
 
 @Composable
 fun MainScreen(
-    modifier: Modifier, appViewModel: ViewModel
+    modifier: Modifier, appViewModel: MainScreenViewModel
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -190,7 +190,7 @@ fun MainScreen(
 @Composable
 private fun ControlsPanel(
     modifier: Modifier,
-    appViewModel: ViewModel
+    appViewModel: MainScreenViewModel
 ) {
     Row(
         modifier = modifier
@@ -219,7 +219,7 @@ private fun ControlsPanel(
 }
 
 @Composable
-private fun PlayControl(modifier: Modifier, appViewModel: ViewModel) {
+private fun PlayControl(modifier: Modifier, appViewModel: MainScreenViewModel) {
     // The label of the play button is now an observable state, an instance of State<Int?>.
     // State<Int?> is used because the label is the id value of the resource string.
     // Thanks to the fact that the composable observes the label,
@@ -250,7 +250,7 @@ private fun PlayControlContent(modifier: Modifier, onClick: () -> Unit, buttonLa
 @Composable
 private fun PitchControl(
     modifier: Modifier,
-    appViewModel: ViewModel
+    appViewModel: MainScreenViewModel
 ) {
     // if the frequency changes, recompose this composable
     val frequency = appViewModel.frequency.observeAsState()
@@ -264,7 +264,7 @@ private fun PitchControl(
 
 
 @Composable
-private fun VolumeControl(modifier: Modifier, appViewModel: ViewModel) {
+private fun VolumeControl(modifier: Modifier, appViewModel: MainScreenViewModel) {
     // volume value is now an observable state; that means that the composable will be
     // recomposed (redrawn) when the observed state changes.
     val volume = appViewModel.volume.observeAsState()
@@ -315,7 +315,7 @@ private fun VolumeControlContent(
 @Composable
 private fun WavetableSelectionPanel(
     modifier: Modifier,
-    appViewModel: ViewModel
+    appViewModel: MainScreenViewModel
 ) {
     Row(
         modifier = modifier

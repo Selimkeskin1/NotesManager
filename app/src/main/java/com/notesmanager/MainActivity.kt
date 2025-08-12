@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
     //    private val vop = VirtualOperator()
     private val vop = NativeOperator()
-    private val viewModel: ViewModel by viewModels()
+    private val viewModel: MainScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun MainApp(vm: ViewModel) {
+fun MainApp(vm: MainScreenViewModel) {
     androidx.compose.material3.Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
@@ -80,7 +80,7 @@ fun MainApp(vm: ViewModel) {
 fun MainAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    vm: ViewModel
+    vm: MainScreenViewModel
 
 ) {
     NavHost(

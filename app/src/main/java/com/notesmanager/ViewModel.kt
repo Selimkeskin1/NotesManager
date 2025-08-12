@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class ViewModel : androidx.lifecycle.ViewModel() {
+class MainScreenViewModel : androidx.lifecycle.ViewModel() {
 
 //    var operator: VirtualOperator? = null
 

@@ -8,7 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import androidx.navigation.compose.composable
 import com.notesmanager.NativeOperator
-import com.notesmanager.ViewModel
+import com.notesmanager.MainScreenViewModel
 
 fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
@@ -61,7 +61,7 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
 fun NavGraphBuilder.authenticatedGraph(
     navController: NavController,
-    vm: ViewModel
+    vm: MainScreenViewModel
 ) {
     navigation(
         route = NavigationRoutes.Authenticated.NavigationRoute.route,
