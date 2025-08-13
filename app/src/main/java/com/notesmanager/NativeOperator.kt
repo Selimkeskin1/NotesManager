@@ -1,6 +1,5 @@
 package com.notesmanager
 
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 

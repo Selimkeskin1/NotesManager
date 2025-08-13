@@ -12,18 +12,13 @@ import androidx.compose.ui.Modifier
 import kotlin.getValue
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.notesmanager.ui.NavigationRoutes
 import com.notesmanager.ui.theme.MainTheme
 import com.notesmanager.ui.unauthenticatedGraph
 
-
-import com.notesmanager.ui.MainLayout
 import com.notesmanager.ui.authenticatedGraph
 
 //class MainActivity : AppCompatActivity() {
