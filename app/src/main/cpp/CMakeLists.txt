@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.22.1)
 # Since this is the top level CMakeLists.txt, the project name is also accessible
 # with ${CMAKE_PROJECT_NAME} (both CMake variables are in-sync within the top level
 # build script scope).
-project("notesmanager")
+project("notesmanager_cpp")
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -24,11 +24,19 @@ project("notesmanager")
 # System.loadLibrary() and pass the name of the library defined here;
 # for GameActivity/NativeActivity derived applications, the same library name must be
 # used in the AndroidManifest.xml file.
+
+
+
+
+
+
+
 add_library(${CMAKE_PROJECT_NAME} SHARED
         # List C/C++ source files with relative paths to this CMakeLists.txt.
         native-lib.cpp
         Helper.cpp
         Notes.cpp
+        Ftp.cpp
 
 
 
@@ -49,6 +57,10 @@ find_library( # Sets the name of the path variable.
         # you want CMake to locate.
         log
 )
+
+
+
+
 
 
 # Specifies libraries CMake should link to your target library. You

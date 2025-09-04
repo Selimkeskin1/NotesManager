@@ -85,6 +85,8 @@ dependencies {
     implementation("androidx.compose.material:material:1.8.3")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("androidx.navigation:navigation-compose:2.9.3")
+    implementation("com.android.ndk.thirdparty:curl:7.85.0-beta-1")
+    implementation("com.android.ndk.thirdparty:jsoncpp:1.9.5-beta-1")
 
 
 
