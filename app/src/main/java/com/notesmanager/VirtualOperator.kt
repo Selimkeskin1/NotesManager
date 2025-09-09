@@ -65,5 +65,9 @@ class VirtualOperator : Operations, DefaultLifecycleObserver {
         Log.d("OperationsLogging", "exit() called")
     }
 
+    override fun synchronize( id: Int, ipAdress: String): Boolean{
+        return true;
+    }
+
 
 }

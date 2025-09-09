@@ -17,6 +17,7 @@
 #include <optional>
 
 
+
 class Notes
 {
 private:
@@ -24,6 +25,8 @@ private:
     std::string getNext();
     std::string getPrevious();
     std::string getCurrent();
+    bool synchronizeFile( std::string  && ip);
+
 
 
 public:
@@ -40,4 +43,7 @@ public:
     std::tuple<int, int> getBeginOfLinePosition(int,int);
     std::optional<std::string> search( std::string & );
     int getId();
+    bool synchronize( std::string  && ip);
+
+
 };

@@ -15,7 +15,9 @@
 #include <zlib.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-
+#include <sys/types.h>
+#include <netinet/in.h>
+#define DEFAULT_BUFLEN 512
 
 class Helper
 {

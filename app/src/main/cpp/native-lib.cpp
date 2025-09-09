@@ -108,3 +108,12 @@ Java_com_notesmanager_NativeOperator_updateOrAdd(JNIEnv *env, jobject thiz, jlon
     }
 
 }
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_notesmanager_NativeOperator_synchronize(JNIEnv *env, jobject thiz, jlong process_handle,
+                                                 jstring ip) {
+    auto *handle = reinterpret_cast<Notes *>( process_handle );
+    return  handle->synchronize( env->GetStringUTFChars(ip, nullptr));
+
+
+}

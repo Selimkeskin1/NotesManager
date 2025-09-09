@@ -13,6 +13,9 @@ interface Operations {
     fun previous(id: Int, searchString: String): String
     fun updateOrAdd(id: Int, description: String, isNew: Boolean): Boolean
 
+    fun  synchronize(id: Int, ipAdress: String): Boolean
+
+
     fun exit()
 
 }

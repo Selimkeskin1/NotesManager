@@ -18,6 +18,9 @@ class NativeOperator : Operations, DefaultLifecycleObserver {
     ): Boolean
 
 
+    private  external  fun synchronize( processHandle: Long, ipAdress : String ) : Boolean
+
+
     private external fun test(processHandle: Long): String
     private var isPlaying = false
     private var nativeOperatorHandle: Long = 0
@@ -142,6 +145,11 @@ class NativeOperator : Operations, DefaultLifecycleObserver {
 
     override fun exit() {
 //        Log.d("OperationsLogging", "exit() called")
+    }
+
+
+    override fun synchronize( id: Int, ipAdress: String): Boolean{
+        return synchronize(nativeOperatorHandle, ipAdress);
     }
 
 }

@@ -137,15 +137,16 @@ fun MainScreen(
         )
     }
 
-    // çıkış butonu
+    // yedekle butonu
     Button(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        onClick = {}
+        onClick = { appViewModel.setUserCommand("SYNCHRONIZE", appViewModel.description) }
+
     )
     {
         Text(
-            text = stringResource(R.string.exit_tr),
+            text = stringResource(R.string.sync_tr),
             style = TextStyle(color = Color.Black, textDirection = TextDirection.Content)
         )
     }
@@ -169,6 +170,15 @@ fun MainScreen(
                     onDismiss = { appViewModel.refreshMessageAndUserCommand() }
                 )
             }
+
+
+            "SYNCHRONIZE" ->{
+                popUpToContinue(
+                    onConfirm = { appViewModel.synchronize(10, appViewModel.description) },
+                    onDismiss = { appViewModel.refreshMessageAndUserCommand() }
+                )
+            }
+
         }
     }
 

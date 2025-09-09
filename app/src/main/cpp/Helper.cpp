@@ -2,6 +2,7 @@
 // Created by TR24798 on 25.07.2025.
 //
 #include "Helper.h"
+#include <jni.h>
 
 Helper::Helper()
 {
@@ -116,3 +117,4 @@ std::string Helper::str_tolower(std::string s)
     }
     return str;
 }
+

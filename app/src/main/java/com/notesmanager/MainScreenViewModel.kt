@@ -218,11 +218,19 @@ class MainScreenViewModel : androidx.lifecycle.ViewModel() {
     }
 
     fun setUserCommand(user_comm: String, note: String) {
-        if (((user_comm == "DELETE") || (user_comm == "UPDATE")) && note.isEmpty()) {
+        if (((user_comm == "DELETE") || (user_comm == "UPDATE") ||  (user_comm == "SYNCHRONIZE") ) && note.isEmpty()) {
             this._alertMessage = "Not boş olamaz!!!"
             return
         }
         this._userCommand = user_comm
+    }
+
+
+    fun synchronize(id: Int, ip: String){
+
+
+        operator?.synchronize(id,ip)
+
     }
 
     fun refreshMessageAndUserCommand() {

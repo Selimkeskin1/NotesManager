@@ -3,8 +3,7 @@
 //
 #include "Notes.h"
 
-Notes::Notes()
-{
+Notes::Notes() {
     std::string file_path = {};
     file_path.append(ROOT_PATH);
     file_path.append("notes.txt");
@@ -13,63 +12,56 @@ Notes::Notes()
     LOGD("Notes Constructor called");
 
 
-    if (!(std::filesystem::exists(file_path))){
-        notestream = new std::fstream(file_path, std::ios_base::out |  std::ios_base::app);
+    if (!(std::filesystem::exists(file_path))) {
+        notestream = new std::fstream(file_path, std::ios_base::out | std::ios_base::app);
         notestream->close();
     }
 
-    notestream = new std::fstream(file_path, std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+    notestream = new std::fstream(file_path,
+                                  std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 
 }
 
-Notes::~Notes()
-{
+Notes::~Notes() {
     LOGD("Notes DeConstructor called");
-    if (notestream != nullptr)
-    {
+    if (notestream != nullptr) {
         notestream->close();
         delete notestream;
     }
 
 }
 
-std::string Notes::getNext()
-{
+std::string Notes::getNext() {
     std::string line = {};
 
-    while (!(notestream->eof()))
-    {
+    while (!(notestream->eof())) {
         std::getline(*(notestream), line);
-        if (!(line.empty()))
-        {
+        if (!(line.empty())) {
             std::string row = {};
             std::stringstream ss(line);
             int index = 0;
 
-            while (std::getline(ss, row, '\t'))
-            {
-                if (index == 0){
+            while (std::getline(ss, row, '\t')) {
+                if (index == 0) {
                     if ((row == "X"))
                         break;
 
-                }else if (index == 2){
-                   return row;
+                } else if (index == 2) {
+                    return row;
                 }
                 index++;
             }
         }
     }
 
-    if (notestream->eof())
-    {
+    if (notestream->eof()) {
         throw std::out_of_range("EOF reached");
         return "Last Record!";
     }
     return line;
 }
 
-std::string Notes::getPrevious()
-{
+std::string Notes::getPrevious() {
     std::tuple<int, int> pos;
     std::string line = {};
     notestream->clear();
@@ -77,13 +69,11 @@ std::string Notes::getPrevious()
     if (notestream->tellg() == 0)
         //        return "First Record!";
         throw std::out_of_range("BOF reached");
-    do
-    {
+    do {
         pos = {};
         pos = getBeginOfLinePosition(3, 5);
 
-        if (notestream->seekg(std::get<0>(pos)))
-        {
+        if (notestream->seekg(std::get<0>(pos))) {
             std::string prevLine = {};
             std::getline((*notestream), prevLine);
             if (std::get<1>(pos) <= 0)
@@ -91,8 +81,7 @@ std::string Notes::getPrevious()
             std::stringstream ss(prevLine);
             int index = 0;
             std::string row = {};
-            while (std::getline(ss, row, '\t'))
-            {
+            while (std::getline(ss, row, '\t')) {
                 if ((index == 0) && (row == "X")) //  not deleted!
                     break;
                 else if (index == 2)
@@ -107,8 +96,7 @@ std::string Notes::getPrevious()
 }
 
 
-std::string Notes::getCurrent()
-{
+std::string Notes::getCurrent() {
     std::string currentLine = {};
     notestream->clear();
     auto currentPos = notestream->tellg();
@@ -119,60 +107,47 @@ std::string Notes::getCurrent()
     return currentLine;
 }
 
-bool Notes::newNote(std::string &newnote)
-{
+bool Notes::newNote(std::string &newnote) {
 
     notestream->clear();
-    if (notestream->is_open())
-    {
+    if (notestream->is_open()) {
         notestream->seekp(0, std::ios_base::end);
         (*notestream) << newnote;
         (*notestream) << std::endl;
         notestream->flush();
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 
     return false;
 }
 
-bool Notes::updateNote(std::string &update)
-{
-    if (deleteNote(update))
-    {
-        if (newNote(update))
-        {
+bool Notes::updateNote(std::string &update) {
+    if (deleteNote(update)) {
+        if (newNote(update)) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
-bool Notes::deleteNote(std::string &del)
-{
+bool Notes::deleteNote(std::string &del) {
     auto pos = getBeginOfLinePosition(2, 5);
     std::cout << std::get<0>(pos) << std::endl;
     notestream->clear();
     auto writepos = std::get<0>(pos) > 0 ? std::get<0>(pos) + 2 : 0;
     //Changing the current write position.
-    notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos)  : 0, std::ios_base::beg);
+    notestream->seekp(std::get<0>(pos) > 0 ? std::get<0>(pos) : 0, std::ios_base::beg);
     (*notestream) << "X";
     notestream->flush();
     return true;
 }
 
-std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize)
-{
+std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize) {
     std::string line = {};
 
     int pos = 0;
@@ -181,7 +156,7 @@ std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize)
 
 //    char buffer[bufferSize + 1] = {};
     char buffer[bufferSize + 1];
-    for( auto & c: buffer)  c = '\0';
+    for (auto &c: buffer) c = '\0';
 
     notestream->clear();
 
@@ -204,30 +179,23 @@ std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize)
         */
     pos -= bufferSize;
 
-    while (pos > 0)
-    {
+    while (pos > 0) {
         int posAdd = 0;
-        if (notestream->seekg(pos))
-        {
+        if (notestream->seekg(pos)) {
             //          notestream->get(buffer, ( bufferSize + 1 ),  '\xE' );
             notestream->get(buffer, (bufferSize + 1), '\x0'); // NULL
             //          notestream->get(buffer, ( bufferSize + 1 ) );
-            for (auto c : buffer)
-            {
+            for (auto c: buffer) {
                 posAdd++;
-                if ((c == '\n') || c == '\r')
-                {
+                if ((c == '\n') || c == '\r') {
                     newline++;
                     break;
                 }
             }
-        }
-        else
-        {
+        } else {
             break;
         }
-        if (newline == times)
-        {
+        if (newline == times) {
             findpos = pos + posAdd;
             //            findpos = pos + posAdd;
             break;
@@ -238,66 +206,54 @@ std::tuple<int, int> Notes::getBeginOfLinePosition(int times, int bufferSize)
     //    return findpos;
 }
 
-std::optional<std::string> Notes::search(std::string &search)
-{
+std::optional<std::string> Notes::search(std::string &search) {
     notestream->clear();
     auto lastPos = notestream->tellg();
-    notestream->seekg( 0,notestream->beg);
+    notestream->seekg(0, notestream->beg);
     auto nextRecord = next(search);
-    if(nextRecord == std::nullopt) {
+    if (nextRecord == std::nullopt) {
         notestream->clear();
-        notestream->seekg( lastPos);
+        notestream->seekg(lastPos);
         return std::nullopt;
-    }
-    else return nextRecord;
+    } else return nextRecord;
 }
 
-std::optional<std::string> Notes::next(std::string &search)
-{
-    while (!notestream->eof())
-    {
-        try
-        {
+std::optional<std::string> Notes::next(std::string &search) {
+    while (!notestream->eof()) {
+        try {
             auto next = getNext();
             if (Helper::str_tolower(next).find(Helper::str_tolower(search)) != std::string::npos)
                 return next;
         }
-        catch (const std::exception &ex)
-        {
+        catch (const std::exception &ex) {
             return std::nullopt;
         }
     }
-    return  std::nullopt;
+    return std::nullopt;
 }
 
-std::optional<std::string> Notes::previous(std::string &search)
-{
+std::optional<std::string> Notes::previous(std::string &search) {
     notestream->clear();
-    while (notestream->tellg() > 0)
-    {
-        try
-        {
+    while (notestream->tellg() > 0) {
+        try {
             auto previous = getPrevious();
-            if (Helper::str_tolower(previous).find(Helper::str_tolower(search)) != std::string::npos)
-            {
+            if (Helper::str_tolower(previous).find(Helper::str_tolower(search)) !=
+                std::string::npos) {
                 return previous;
             }
         }
-        catch (const std::exception &exc)
-        {
+        catch (const std::exception &exc) {
             return std::nullopt;
         }
     }
-    return  std::nullopt;
+    return std::nullopt;
 }
 
-std::optional<std::string> Notes::current(std::string &search)
-{
+std::optional<std::string> Notes::current(std::string &search) {
     return getCurrent();
 }
 
-int Notes::getId()
-{
+int Notes::getId() {
     std::string line = {};
     notestream->clear();
     auto currentPos = notestream->tellg();
@@ -306,17 +262,144 @@ int Notes::getId()
     notestream->seekg(std::get<0>(read_pos));
     std::getline(*notestream, line);
 
-    if (!(line.empty())){
+    if (!(line.empty())) {
         notestream->seekg(currentPos);
         std::stringstream ss(line);
         std::string row = {};
         int index = 0;
-        while (std::getline(ss, row, '\t')){
-            if (index == 1){
+        while (std::getline(ss, row, '\t')) {
+            if (index == 1) {
                 return (std::stoi(row) + 1);
             }
             ++index;
         }
     }
     return 0;
+}
+
+
+bool Notes::synchronize(std::string &&ip) {
+    return synchronizeFile(std::move(ip));
+}
+
+bool Notes::synchronizeFile(std::string &&ip) {
+
+    int ConnectSocket = 0;
+    struct sockaddr_in serv_addr;
+    int iResult = 0;
+
+    struct sockaddr_in my_addr1;
+
+    struct addrinfo *result = NULL, *ptr = NULL, hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    memset(&my_addr1, 0, sizeof(my_addr1));
+
+    my_addr1.sin_family = AF_INET;
+    my_addr1.sin_addr.s_addr = INADDR_ANY;
+    my_addr1.sin_port = htons(27016);
+
+
+
+//    iResult = getaddrinfo("tcpbin.com", "4242", &hints, &result);
+    iResult = getaddrinfo("88.242.239.44", "27015", &hints, &result);
+    if (iResult != 0) {
+        LOGD("getaddrinfo failed with error: %d\n", iResult);
+        return false;
+    }
+
+
+
+
+
+    // Create socket
+    for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
+        ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,ptr->ai_protocol);
+
+
+        if (ConnectSocket < 0) {
+            continue;
+        }
+
+
+        if (bind(ConnectSocket, (struct sockaddr*) &my_addr1, sizeof(struct sockaddr_in)) == 0){
+            printf("Binded Correctly\n");
+        }else{
+            continue;
+        }
+
+
+
+        // Connect to server.
+        iResult = connect(ConnectSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
+
+
+        // Connect to server
+        if (iResult < 0) {
+//            std::cerr << "Connection Failed" << std::endl;
+
+            LOGD("The last error message is: %s\n", strerror(errno));
+            continue;
+        }else if (iResult != -1 )
+
+        break;
+
+        close(ConnectSocket );
+
+    }
+
+    freeaddrinfo(result);
+
+    if( ptr == nullptr){
+        LOGD( "Could not connect\n");
+        LOGD( "ERR %d" ,  stderr);
+    }
+
+
+    // Send message
+    const char *sendbuf = "this is a test";
+    iResult = write(ConnectSocket, sendbuf, (int) strlen(sendbuf));
+
+    if (iResult < 0) {
+
+    }
+    LOGD("Bytes Sent: %ld\n", iResult);
+
+
+    char recvbuf[DEFAULT_BUFLEN] = {0};
+    int recvbuflen = DEFAULT_BUFLEN;
+
+
+
+
+
+    // Receive until the peer closes the connection
+    do {
+        iResult = read(ConnectSocket, recvbuf, recvbuflen);
+        if (iResult > 0) {
+            LOGD("Bytes received: %d\n", iResult);
+            LOGD("received data %s \n", recvbuf);
+        } else if (iResult == 0)
+            LOGD("Connection closed\n");
+        else
+            LOGD("recv failed with error: %d\n");
+
+    } while (iResult > 0);
+
+
+
+
+    //   int valread = read(sock, buffer, sizeof(buffer));
+//    int valread = recv(sock,buffer,sizeof(buffer),0);
+
+//    LOGD("Server reply: %s" , buffer);
+//    LOGD("Server reply: %i" , valread);
+
+//     std::cout << "Server reply: " << buffer << std::endl;
+
+    close(ConnectSocket);
+    return true;
 }
