@@ -284,13 +284,12 @@ bool Notes::synchronize(std::string &&ip) {
 
 bool Notes::synchronizeFile(std::string &&ip) {
 
-    int ConnectSocket = 0;
+    int ConnectSocket = -1;
     struct sockaddr_in serv_addr;
     int iResult = 0;
-
     struct sockaddr_in my_addr1;
-
     struct addrinfo *result = NULL, *ptr = NULL, hints;
+
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -305,13 +304,11 @@ bool Notes::synchronizeFile(std::string &&ip) {
 
 
 //    iResult = getaddrinfo("tcpbin.com", "4242", &hints, &result);
-    iResult = getaddrinfo("88.242.239.44", "27015", &hints, &result);
+    iResult = getaddrinfo("192.168.1.200", "27015", &hints, &result);
     if (iResult != 0) {
         LOGD("getaddrinfo failed with error: %d\n", iResult);
         return false;
     }
-
-
 
 
 
@@ -331,8 +328,6 @@ bool Notes::synchronizeFile(std::string &&ip) {
             continue;
         }
 
-
-
         // Connect to server.
         iResult = connect(ConnectSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
 
@@ -340,15 +335,12 @@ bool Notes::synchronizeFile(std::string &&ip) {
         // Connect to server
         if (iResult < 0) {
 //            std::cerr << "Connection Failed" << std::endl;
-
             LOGD("The last error message is: %s\n", strerror(errno));
             continue;
         }else if (iResult != -1 )
-
         break;
-
+        shutdown(ConnectSocket, SHUT_RDWR );
         close(ConnectSocket );
-
     }
 
     freeaddrinfo(result);
@@ -356,29 +348,39 @@ bool Notes::synchronizeFile(std::string &&ip) {
     if( ptr == nullptr){
         LOGD( "Could not connect\n");
         LOGD( "ERR %d" ,  stderr);
+        shutdown(ConnectSocket, SHUT_RDWR );
+        close(ConnectSocket);
+        return false;
     }
 
 
     // Send message
     const char *sendbuf = "this is a test";
-    iResult = write(ConnectSocket, sendbuf, (int) strlen(sendbuf));
+    iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf),0);
 
     if (iResult < 0) {
-
+        LOGD("The last error message is: %s\n", strerror(errno));
+        shutdown(ConnectSocket, SHUT_RDWR );
+        close(ConnectSocket);
+        return  false;
     }
+
     LOGD("Bytes Sent: %ld\n", iResult);
 
+    iResult = shutdown(ConnectSocket, SHUT_WR );
+    if ( iResult < 0 ){
+        LOGD("The last error message is: %s\n", strerror(errno));
+        shutdown(ConnectSocket, SHUT_RDWR );
+        close(ConnectSocket);
+        return  false;
+    }
 
     char recvbuf[DEFAULT_BUFLEN] = {0};
     int recvbuflen = DEFAULT_BUFLEN;
 
-
-
-
-
     // Receive until the peer closes the connection
     do {
-        iResult = read(ConnectSocket, recvbuf, recvbuflen);
+        iResult = recv(ConnectSocket, recvbuf, recvbuflen,0 );
         if (iResult > 0) {
             LOGD("Bytes received: %d\n", iResult);
             LOGD("received data %s \n", recvbuf);
@@ -400,6 +402,8 @@ bool Notes::synchronizeFile(std::string &&ip) {
 
 //     std::cout << "Server reply: " << buffer << std::endl;
 
+
+    shutdown(ConnectSocket, SHUT_RDWR );
     close(ConnectSocket);
     return true;
 }
