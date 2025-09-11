@@ -304,7 +304,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
 
 
 //    iResult = getaddrinfo("tcpbin.com", "4242", &hints, &result);
-    iResult = getaddrinfo("192.168.1.200", "27015", &hints, &result);
+    iResult = getaddrinfo("192.168.1.201", "27015", &hints, &result);
     if (iResult != 0) {
         LOGD("getaddrinfo failed with error: %d\n", iResult);
         return false;
