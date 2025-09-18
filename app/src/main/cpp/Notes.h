@@ -27,6 +27,10 @@ private:
     std::string getCurrent();
     bool synchronizeFile( std::string  && ip);
 
+    int sendData(int ConnectSocket, std::string const &message);
+    std::string  receiveData(int ConnectSocket);
+    std::string lastWriteTime(const std::string &  file);
+
 
 
 public:

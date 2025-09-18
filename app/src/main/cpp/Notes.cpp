@@ -394,16 +394,74 @@ bool Notes::synchronizeFile(std::string &&ip) {
 
 
 
-    //   int valread = read(sock, buffer, sizeof(buffer));
-//    int valread = recv(sock,buffer,sizeof(buffer),0);
 
-//    LOGD("Server reply: %s" , buffer);
-//    LOGD("Server reply: %i" , valread);
-
-//     std::cout << "Server reply: " << buffer << std::endl;
 
 
     shutdown(ConnectSocket, SHUT_RDWR );
     close(ConnectSocket);
     return true;
+}
+
+
+
+
+
+
+int Notes::sendData(int ConnectSocket, const std::string &message) {
+
+    const char *sendData = nullptr;
+    sendData = message.c_str();
+
+    return send(ConnectSocket, sendData, message.size(), 0);
+
+
+}
+
+
+ std::string  Notes::receiveData(int ConnectSocket) {
+     int result = {0};
+     std::string receivedData = {};
+
+     // Receive until the peer closes the connection
+     char recvbuf[DEFAULT_BUFLEN] = {'\0'};
+
+     result = recv(ConnectSocket, recvbuf, DEFAULT_BUFLEN, 0);
+     if (result > 0)
+     {
+         LOGD("----------\n");
+         LOGD("Bytes received: %d\n", result);
+         LOGD("received data : %s\n", recvbuf);
+         LOGD("----------\n");
+
+         receivedData.append(recvbuf);
+     }
+     else if (result == 0)
+         LOGD("Connection closed\n");
+     else
+
+        LOGD("recv failed with error: %s\n", strerror(errno));
+
+     //   } while (result > 0);
+
+     return receivedData;
+}
+
+
+std::string  Notes::lastWriteTime(const std::string &file) {
+/*
+
+
+
+*/
+
+    std::filesystem::file_time_type ftime = std::filesystem::last_write_time( file );
+
+
+    auto timePoint = std::chrono::file_clock::to_sys(ftime);
+
+    auto converted = std::chrono::system_clock::to_time_t(
+            std::chrono::time_point_cast<std::chrono::system_clock::duration>(timePoint));
+
+  return std::to_string(converted);
+
 }
