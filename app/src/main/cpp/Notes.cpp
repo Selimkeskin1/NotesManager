@@ -314,7 +314,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
 
     // Create socket
     for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
-        ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,ptr->ai_protocol);
+        ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 
 
         if (ConnectSocket < 0) {
@@ -322,9 +322,9 @@ bool Notes::synchronizeFile(std::string &&ip) {
         }
 
 
-        if (bind(ConnectSocket, (struct sockaddr*) &my_addr1, sizeof(struct sockaddr_in)) == 0){
+        if (bind(ConnectSocket, (struct sockaddr *) &my_addr1, sizeof(struct sockaddr_in)) == 0) {
             printf("Binded Correctly\n");
-        }else{
+        } else {
             continue;
         }
 
@@ -337,74 +337,92 @@ bool Notes::synchronizeFile(std::string &&ip) {
 //            std::cerr << "Connection Failed" << std::endl;
             LOGD("The last error message is: %s\n", strerror(errno));
             continue;
-        }else if (iResult != -1 )
-        break;
-        shutdown(ConnectSocket, SHUT_RDWR );
-        close(ConnectSocket );
+        } else if (iResult != -1)
+            break;
+        shutdown(ConnectSocket, SHUT_RDWR);
+        close(ConnectSocket);
     }
 
     freeaddrinfo(result);
 
-    if( ptr == nullptr){
-        LOGD( "Could not connect\n");
-        LOGD( "ERR %d" ,  stderr);
-        shutdown(ConnectSocket, SHUT_RDWR );
+    if (ptr == nullptr) {
+        LOGD("Could not connect\n");
+        LOGD("ERR %d", stderr);
+        shutdown(ConnectSocket, SHUT_RDWR);
         close(ConnectSocket);
         return false;
     }
 
+    std::cout << "\nrecursive_directory_iterator:\n";
+    std::string dir = {};
+    std::string file = {};
+    std::string command = {};
 
-    // Send message
-    const char *sendbuf = "this is a test";
-    iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf),0);
+    const std::filesystem::path sandbox{"/data/data/com.notesmanager/files"};
 
-    if (iResult < 0) {
-        LOGD("The last error message is: %s\n", strerror(errno));
-        shutdown(ConnectSocket, SHUT_RDWR );
-        close(ConnectSocket);
-        return  false;
+
+    for (auto const &dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
+
+        if (dir_entry.is_directory()) {
+            dir = dir_entry.path().string();
+        } else if (dir_entry.is_regular_file()) {
+            file = dir_entry.path().string();
+        }
     }
 
-    LOGD("Bytes Sent: %ld\n", iResult);
 
-    iResult = shutdown(ConnectSocket, SHUT_WR );
-    if ( iResult < 0 ){
-        LOGD("The last error message is: %s\n", strerror(errno));
-        shutdown(ConnectSocket, SHUT_RDWR );
-        close(ConnectSocket);
-        return  false;
+    if (!dir.empty()) {
+        command = {};
+        command = "create_dir";
+        command.append(1, '\t');
+        command.append(dir);
+        sendData(ConnectSocket, command);
+        if (receiveData(ConnectSocket) == "NOK") {
+        } else {
+            for (auto const &dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
+                if (dir_entry.is_regular_file()) {
+                    command = {};
+                    command = "create_file";
+                    command.append(1, '\t');
+                    command.append(dir_entry.path().string());
+                    command.append(1, '\v');
+                    command.append(lastWriteTime(dir_entry.path().string()));
+                    sendData(ConnectSocket, command);
+                    if (receiveData(ConnectSocket) == "NOK")
+                        continue;
+                    else {
+
+                        std::fstream copy_file(dir_entry.path().string(), std::ios_base::in);
+                        if (copy_file.is_open()) {
+                            std::string line{};
+                            while (std::getline(copy_file, line)) {
+                                if (!line.empty()) {
+                                    line.append(1, '\n');
+                                    command = {};
+                                    command = "new_line";
+                                    command.append(1, '\t');
+                                    command.append(line);
+                                    sendData(ConnectSocket, command);
+                                    if (receiveData(ConnectSocket) == "NOK") {
+
+                                    }
+
+
+                                }
+                            }
+                            copy_file.close();
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    char recvbuf[DEFAULT_BUFLEN] = {0};
-    int recvbuflen = DEFAULT_BUFLEN;
 
-    // Receive until the peer closes the connection
-    do {
-        iResult = recv(ConnectSocket, recvbuf, recvbuflen,0 );
-        if (iResult > 0) {
-            LOGD("Bytes received: %d\n", iResult);
-            LOGD("received data %s \n", recvbuf);
-        } else if (iResult == 0)
-            LOGD("Connection closed\n");
-        else
-            LOGD("recv failed with error: %d\n");
-
-    } while (iResult > 0);
-
-
-
-
-
-
-
-    shutdown(ConnectSocket, SHUT_RDWR );
+    shutdown(ConnectSocket, SHUT_RDWR);
     close(ConnectSocket);
     return true;
 }
-
-
-
-
 
 
 int Notes::sendData(int ConnectSocket, const std::string &message) {
@@ -418,50 +436,38 @@ int Notes::sendData(int ConnectSocket, const std::string &message) {
 }
 
 
- std::string  Notes::receiveData(int ConnectSocket) {
-     int result = {0};
-     std::string receivedData = {};
+std::string Notes::receiveData(int ConnectSocket) {
+    int result = {0};
+    std::string receivedData = {};
 
-     // Receive until the peer closes the connection
-     char recvbuf[DEFAULT_BUFLEN] = {'\0'};
+    // Receive until the peer closes the connection
+    char recvbuf[DEFAULT_BUFLEN] = {'\0'};
 
-     result = recv(ConnectSocket, recvbuf, DEFAULT_BUFLEN, 0);
-     if (result > 0)
-     {
-         LOGD("----------\n");
-         LOGD("Bytes received: %d\n", result);
-         LOGD("received data : %s\n", recvbuf);
-         LOGD("----------\n");
+    result = recv(ConnectSocket, recvbuf, DEFAULT_BUFLEN, 0);
+    if (result > 0) {
+        LOGD("----------\n");
+        LOGD("Bytes received: %d\n", result);
+        LOGD("received data : %s\n", recvbuf);
+        LOGD("----------\n");
 
-         receivedData.append(recvbuf);
-     }
-     else if (result == 0)
-         LOGD("Connection closed\n");
-     else
+        receivedData.append(recvbuf);
+    } else if (result == 0)
+        LOGD("Connection closed\n");
+    else
 
         LOGD("recv failed with error: %s\n", strerror(errno));
 
-     //   } while (result > 0);
+    //   } while (result > 0);
 
-     return receivedData;
+    return receivedData;
 }
 
 
-std::string  Notes::lastWriteTime(const std::string &file) {
-/*
-
-
-
-*/
-
-    std::filesystem::file_time_type ftime = std::filesystem::last_write_time( file );
-
-
+std::string Notes::lastWriteTime(const std::string &file) {
+    std::filesystem::file_time_type ftime = std::filesystem::last_write_time(file);
     auto timePoint = std::chrono::file_clock::to_sys(ftime);
-
     auto converted = std::chrono::system_clock::to_time_t(
             std::chrono::time_point_cast<std::chrono::system_clock::duration>(timePoint));
-
-  return std::to_string(converted);
+    return std::to_string(converted);
 
 }
