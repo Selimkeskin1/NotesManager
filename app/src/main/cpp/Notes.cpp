@@ -404,10 +404,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
                                     command.append(line);
                                     sendData(ConnectSocket, command);
                                     if (receiveData(ConnectSocket) == "NOK") {
-
                                     }
-
-
                                 }
                             }
                             copy_file.close();
@@ -454,9 +451,7 @@ std::string Notes::receiveData(int ConnectSocket) {
     } else if (result == 0)
         LOGD("Connection closed\n");
     else
-
         LOGD("recv failed with error: %s\n", strerror(errno));
-
     //   } while (result > 0);
 
     return receivedData;
@@ -469,5 +464,4 @@ std::string Notes::lastWriteTime(const std::string &file) {
     auto converted = std::chrono::system_clock::to_time_t(
             std::chrono::time_point_cast<std::chrono::system_clock::duration>(timePoint));
     return std::to_string(converted);
-
 }
