@@ -30,6 +30,7 @@ private:
     int sendData(int ConnectSocket, std::string const &message);
     std::string  receiveData(int ConnectSocket);
     std::string lastWriteTime(const std::string &  file);
+    std::string  getRelatievePath(std::string path);
 
 
 

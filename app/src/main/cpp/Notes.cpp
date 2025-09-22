@@ -12,6 +12,12 @@ Notes::Notes() {
     LOGD("Notes Constructor called");
 
 
+
+    if  ( ! ( std::filesystem::exists(ROOT_PATH) ) ){
+        std::filesystem::create_directories(ROOT_PATH);
+    }
+
+
     if (!(std::filesystem::exists(file_path))) {
         notestream = new std::fstream(file_path, std::ios_base::out | std::ios_base::app);
         notestream->close();
@@ -358,7 +364,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
     std::string file = {};
     std::string command = {};
 
-    const std::filesystem::path sandbox{"/data/data/com.notesmanager/files"};
+    const std::filesystem::path sandbox{ ROOT_PATH };
 
 
     for (auto const &dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
@@ -370,6 +376,9 @@ bool Notes::synchronizeFile(std::string &&ip) {
         }
     }
 
+    dir = getRelatievePath(dir );
+
+//    dir = "notesmanager";
 
     if (!dir.empty()) {
         command = {};
@@ -380,11 +389,15 @@ bool Notes::synchronizeFile(std::string &&ip) {
         if (receiveData(ConnectSocket) == "NOK") {
         } else {
             for (auto const &dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
-                if (dir_entry.is_regular_file()) {
+                if (dir_entry.is_regular_file()  ) {
                     command = {};
                     command = "create_file";
                     command.append(1, '\t');
-                    command.append(dir_entry.path().string());
+
+                    std::string relatievePath = {};
+                    relatievePath = getRelatievePath(dir_entry.path().string());
+//                    command.append(dir_entry.path().string());
+                    command.append(relatievePath);
                     command.append(1, '\v');
                     command.append(lastWriteTime(dir_entry.path().string()));
                     sendData(ConnectSocket, command);
@@ -464,4 +477,9 @@ std::string Notes::lastWriteTime(const std::string &file) {
     auto converted = std::chrono::system_clock::to_time_t(
             std::chrono::time_point_cast<std::chrono::system_clock::duration>(timePoint));
     return std::to_string(converted);
+}
+
+std::string  Notes::getRelatievePath(std::string path) {
+    std::string root = {ROOT_PATH};
+    return path.replace(path.find(root), root.length(), "notesmanager\\");
 }

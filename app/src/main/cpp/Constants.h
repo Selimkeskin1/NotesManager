@@ -25,5 +25,5 @@
 #if defined(_WIN32) || defined(_WIN64)
 #define ROOT_PATH "C:\\Users\\tr24798\\projects\\helloworld\\prod\\16031195646\\measurements\\test\\"
 #elif defined(__ANDROID__)
-#define ROOT_PATH "/data/data/com.notesmanager/files/"
+#define ROOT_PATH "/data/data/com.notesmanager/files/prod/"
 #endif

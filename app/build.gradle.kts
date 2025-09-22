@@ -16,16 +16,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters += listOf("armeabi-v7a","arm64-v8a","x86","x86_64")
-        }
-        externalNativeBuild {
-            cmake {
-                cppFlags += "-std=c++23"
-                arguments += "-DANDROID_STL=c++_shared"
-                abiFilters += listOf("armeabi-v7a","arm64-v8a","x86","x86_64")
-            }
-        }
+
+
 
 
 

@@ -28,7 +28,7 @@ class NativeOperator : Operations, DefaultLifecycleObserver {
 
     companion object {
         init {
-            System.loadLibrary("notesmanager_cpp")
+            System.loadLibrary("notesmanager")
         }
     }
 
