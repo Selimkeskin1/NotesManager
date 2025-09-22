@@ -17,8 +17,6 @@ std::string Helper::str_tolower(std::string s)
     std::string str = "";
     char cont = ' ';
 
-
-
     setlocale(LC_ALL, "Turkish");
     for (int i = 0; i < s.length(); i++)
     {
