@@ -328,11 +328,15 @@ bool Notes::synchronizeFile(std::string &&ip) {
         }
 
 
+
         if (bind(ConnectSocket, (struct sockaddr *) &my_addr1, sizeof(struct sockaddr_in)) == 0) {
             printf("Binded Correctly\n");
         } else {
             continue;
         }
+
+
+
 
         // Connect to server.
         iResult = connect(ConnectSocket, ptr->ai_addr, (int) ptr->ai_addrlen);
@@ -376,9 +380,9 @@ bool Notes::synchronizeFile(std::string &&ip) {
         }
     }
 
-    dir = getRelatievePath(dir );
+//    dir = getRelatievePath(dir );
 
-//    dir = "notesmanager";
+    dir = "notesmanager/";
 
     if (!dir.empty()) {
         command = {};
@@ -440,8 +444,13 @@ int Notes::sendData(int ConnectSocket, const std::string &message) {
     const char *sendData = nullptr;
     sendData = message.c_str();
 
-    return send(ConnectSocket, sendData, message.size(), 0);
-
+//    return send(ConnectSocket, sendData, message.size(), 0);
+   try {
+       return write(ConnectSocket, sendData, message.size());
+   }
+   catch (const std::exception &ex) {
+       LOGD("while socket->sendData exceptipn occured :%s", ex.what());
+   }
 
 }
 
@@ -453,7 +462,14 @@ std::string Notes::receiveData(int ConnectSocket) {
     // Receive until the peer closes the connection
     char recvbuf[DEFAULT_BUFLEN] = {'\0'};
 
-    result = recv(ConnectSocket, recvbuf, DEFAULT_BUFLEN, 0);
+//    result = recv(ConnectSocket, recvbuf, DEFAULT_BUFLEN, 0);
+    try {
+        result = read(ConnectSocket, recvbuf, DEFAULT_BUFLEN);
+    }
+    catch (const std::exception &ex) {
+        LOGD("while socket->receiveData exceptipn occured :%s", ex.what());
+    }
+
     if (result > 0) {
         LOGD("----------\n");
         LOGD("Bytes received: %d\n", result);
@@ -480,6 +496,9 @@ std::string Notes::lastWriteTime(const std::string &file) {
 }
 
 std::string  Notes::getRelatievePath(std::string path) {
-    std::string root = {ROOT_PATH};
-    return path.replace(path.find(root), root.length(), "notesmanager\\");
+    std::string root = {ROOT_PATH };
+    std::string relPath = path;
+    relPath.replace(relPath.find(root), root.length(), "notesmanager/");
+
+    return relPath ;
 }
