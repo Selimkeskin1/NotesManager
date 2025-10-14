@@ -310,7 +310,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
 
 
 //    iResult = getaddrinfo("tcpbin.com", "4242", &hints, &result);
-    iResult = getaddrinfo(ip.c_str(), "27015", &hints, &result);
+    iResult = getaddrinfo(ip.c_str(), DEFAULT_PORT, &hints, &result);
     if (iResult != 0) {
         LOGD("getaddrinfo failed with error: %d\n", iResult);
         return false;
@@ -404,27 +404,47 @@ bool Notes::synchronizeFile(std::string &&ip) {
                     command.append(relatievePath);
                     command.append(1, '\v');
                     command.append(lastWriteTime(dir_entry.path().string()));
+                    auto fs = std::to_string(std::filesystem::file_size(dir_entry.path()));
+                    command.append(1, '\v');
+                    command.append(fs);
+
+
+
                     sendData(ConnectSocket, command);
                     if (receiveData(ConnectSocket) == "NOK")
                         continue;
                     else {
 
-                        std::fstream copy_file(dir_entry.path().string(), std::ios_base::in);
+                        std::ifstream copy_file(dir_entry.path().string(), std::ios_base::binary);
+                        std::size_t index = {0};
+
                         if (copy_file.is_open()) {
                             std::string line{};
-                            while (std::getline(copy_file, line)) {
-                                if (!line.empty()) {
-                                    line.append(1, '\n');
-                                    command = {};
-                                    command = "new_line";
-                                    command.append(1, '\t');
-                                    command.append(line);
-                                    sendData(ConnectSocket, command);
-                                    if (receiveData(ConnectSocket) == "NOK") {
-                                    }
-                                }
+                            LOGD( "file transfer begins\n" );
+                            command = {};
+                            command = "new_line";
+                            sendData(ConnectSocket, command);
+                            receiveData(ConnectSocket);
+
+                            while (!copy_file.eof()){
+                                ++index;
+                                /**/
+                                char buffer[DEFAULT_BUFLEN] = {'\0'};
+                                copy_file.read(buffer, DEFAULT_BUFLEN);
+                                std::streamsize bytesRead = copy_file.gcount();
+                                send_binary_data(ConnectSocket, buffer);
+//                                std::this_thread::sleep_for(std::chrono::microseconds(300000));
+                                /**/
                             }
+                            if (copy_file.eof()) // check for EOF
+                                LOGD( "[EoF reached]\n" );
+                            else
+                               LOGD("[error reading]\n " );
+                            LOGD(" index = %d" ,  index );
                             copy_file.close();
+                            command = {};
+                            command = "finish";
+                            sendData(ConnectSocket, command);
                         }
                     }
                 }
@@ -501,4 +521,8 @@ std::string  Notes::getRelatievePath(std::string path) {
     relPath.replace(relPath.find(root), root.length(), "notesmanager/");
 
     return relPath ;
+}
+
+int Notes::send_binary_data(int ConnectSocket, char *message) {
+    return send(ConnectSocket, message, DEFAULT_BUFLEN, 0);
 }

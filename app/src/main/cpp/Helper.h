@@ -19,7 +19,8 @@
 #include <netinet/in.h>
 #include <chrono>
 #include <ctime>
-#define DEFAULT_BUFLEN 512
+#define DEFAULT_BUFLEN 4096
+#define DEFAULT_PORT "27015"
 
 class Helper
 {
