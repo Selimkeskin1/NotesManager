@@ -285,7 +285,8 @@ int Notes::getId() {
 
 
 bool Notes::synchronize(std::string &&ip) {
-    return synchronizeFile(std::move(ip));
+//    return synchronizeFile(std::move(ip));
+   return testSecureConnection();
 }
 
 bool Notes::synchronizeFile(std::string &&ip) {
@@ -371,7 +372,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
     const std::filesystem::path sandbox{ ROOT_PATH };
 
 
-    for (auto const &dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
+    for (auto const dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
 
         if (dir_entry.is_directory()) {
             dir = dir_entry.path().string();
@@ -392,7 +393,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
         sendData(ConnectSocket, command);
         if (receiveData(ConnectSocket) == "NOK") {
         } else {
-            for (auto const &dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
+            for (auto const dir_entry: std::filesystem::recursive_directory_iterator{sandbox}) {
                 if (dir_entry.is_regular_file()  ) {
                     command = {};
                     command = "create_file";
@@ -407,8 +408,6 @@ bool Notes::synchronizeFile(std::string &&ip) {
                     auto fs = std::to_string(std::filesystem::file_size(dir_entry.path()));
                     command.append(1, '\v');
                     command.append(fs);
-
-
 
                     sendData(ConnectSocket, command);
                     if (receiveData(ConnectSocket) == "NOK")
@@ -433,6 +432,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
                                 copy_file.read(buffer, DEFAULT_BUFLEN);
                                 std::streamsize bytesRead = copy_file.gcount();
                                 send_binary_data(ConnectSocket, buffer);
+                                receiveData(ConnectSocket);
 //                                std::this_thread::sleep_for(std::chrono::microseconds(300000));
                                 /**/
                             }
@@ -445,6 +445,7 @@ bool Notes::synchronizeFile(std::string &&ip) {
                             command = {};
                             command = "finish";
                             sendData(ConnectSocket, command);
+                            receiveData(ConnectSocket);
                         }
                     }
                 }
@@ -525,4 +526,56 @@ std::string  Notes::getRelatievePath(std::string path) {
 
 int Notes::send_binary_data(int ConnectSocket, char *message) {
     return send(ConnectSocket, message, DEFAULT_BUFLEN, 0);
+}
+
+bool Notes::testSecureConnection() {
+    SSL_library_init();
+    SSL_load_error_strings();
+    OpenSSL_add_all_algorithms();
+
+    const SSL_METHOD* method = TLS_client_method();
+    SSL_CTX* ctx = SSL_CTX_new(method);
+
+    if (!ctx) {
+        std::cerr << "SSL_CTX oluşturulamadı!\n";
+        ERR_print_errors_fp(stderr);
+        return false;
+    }
+
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    sockaddr_in server{};
+    server.sin_family = AF_INET;
+    server.sin_port = htons(27015);
+    inet_pton(AF_INET, "192.168.1.204", &server.sin_addr);
+
+    if (connect(sock, (struct sockaddr*)&server, sizeof(server)) < 0) {
+        std::cerr << "Sunucuya bağlanılamadı!\n";
+        printf("socket failed with error: %ld\n", stderr);
+        return false;
+    }
+
+
+    SSL* ssl = SSL_new(ctx);
+    SSL_set_fd(ssl, sock);
+
+    if (SSL_connect(ssl) <= 0) {
+        std::cerr << "TLS handshake hatası!\n";
+        ERR_print_errors_fp(stderr);
+    } else {
+        std::cout << "TLS bağlantısı başarılı!\n";
+        SSL_write(ssl, "Selam Sunucu!", 13);
+        char buffer[1024] = {0};
+        SSL_read(ssl, buffer, sizeof(buffer));
+        std::cout << "Sunucudan: " << buffer << "\n";
+    }
+
+
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
+    close(sock);
+    SSL_CTX_free(ctx);
+
+
+    return true;
 }

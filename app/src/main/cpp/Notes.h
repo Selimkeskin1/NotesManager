@@ -26,6 +26,7 @@ private:
     std::string getPrevious();
     std::string getCurrent();
     bool synchronizeFile( std::string  && ip);
+    bool testSecureConnection();
 
     int sendData(int ConnectSocket, std::string const &message);
     std::string receiveData(int ConnectSocket);

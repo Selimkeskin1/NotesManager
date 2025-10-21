@@ -17,8 +17,17 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        ndk {
+            abiFilters += listOf("armeabi-v7a","arm64-v8a","x86","x86_64")
+        }
 
-
+        externalNativeBuild {
+            cmake {
+                cppFlags += "-std=c++2a"
+                arguments += "-DANDROID_STL=c++_shared"
+                abiFilters += listOf("armeabi-v7a","arm64-v8a","x86","x86_64")
+            }
+        }
 
 
 
@@ -42,30 +51,18 @@ android {
 
     externalNativeBuild {
         cmake {
-
-
             path = file("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
-
-
-
-
-
-
-
-
-
-
-
-
         }
     }
+
+
     buildFeatures {
         viewBinding = true
         compose = true
     }
 
-    ndkVersion =  "29.0.13846066"
+    ndkVersion =  "29.0.14206865"
 
 }
 

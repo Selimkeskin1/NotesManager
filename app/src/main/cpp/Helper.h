@@ -19,7 +19,12 @@
 #include <netinet/in.h>
 #include <chrono>
 #include <ctime>
-#define DEFAULT_BUFLEN 4096
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/bio.h>
+
+
+#define DEFAULT_BUFLEN 1024
 #define DEFAULT_PORT "27015"
 
 class Helper

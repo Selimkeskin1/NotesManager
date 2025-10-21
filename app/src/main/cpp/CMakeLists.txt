@@ -45,10 +45,25 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
 )
 
 
-include_directories(
-        include
 
-)
+# include headers
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+
+
+
+
+# specify path to libs
+set(OPENSSL_ROOT_DIR  ${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI})
+
+add_library(crypto STATIC IMPORTED)
+set_target_properties(crypto PROPERTIES IMPORTED_LOCATION
+        ${OPENSSL_ROOT_DIR}/libcrypto.a)
+
+add_library(ssl STATIC IMPORTED)
+set_target_properties(ssl PROPERTIES IMPORTED_LOCATION
+        ${OPENSSL_ROOT_DIR}/libssl.a)
+
 
 
 
@@ -57,6 +72,7 @@ find_library( # Sets the name of the path variable.
         # Specifies the name of the NDK library that
         # you want CMake to locate.
         log
+
 )
 
 
@@ -70,4 +86,9 @@ find_library( # Sets the name of the path variable.
 target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
         android
-        log)
+        log
+        ssl
+        crypto
+
+
+)
